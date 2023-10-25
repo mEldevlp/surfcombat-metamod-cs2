@@ -35,7 +35,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Default|x64'">
     <ClCompile>
       <AdditionalOptions>/DSE_CS2=25 /DSOURCE_ENGINE=25 /Zi /TP /std:c++17</AdditionalOptions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);D:\cs2dev\surfcombat-metamod-s2\metamod-source\core;D:\cs2dev\surfcombat-metamod-s2\metamod-source\core\sourcehook;D:\cs2dev\surfcombat-metamod-s2;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\engine;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\mathlib;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\vstdlib;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier1;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\game\server;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\game\shared;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\common;D:\cs2dev\surfcombat-metamod-s2\src;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\entity2;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\game\server</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);metamod-source\core;metamod-source\core\sourcehook;($SolutionDir);hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WINDOWS;COMPILER_MSVC;COMPILER_MSVC64;X64BITS;PLATFORM_64BITS;META_IS_SOURCE2</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>true</MinimalRebuild>
@@ -49,10 +49,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WINDOWS;SE_CS2=25;SOURCE_ENGINE=25;COMPILER_MSVC;COMPILER_MSVC64;X64BITS;PLATFORM_64BITS;META_IS_SOURCE2</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\cs2dev\surfcombat-metamod-s2\metamod-source\core;D:\cs2dev\surfcombat-metamod-s2\metamod-source\core\sourcehook;D:\cs2dev\surfcombat-metamod-s2;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\engine;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\mathlib;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\vstdlib;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier1;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\game\server;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\game\shared;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\common;D:\cs2dev\surfcombat-metamod-s2\src;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\entity2;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\game\server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>metamod-source\core;metamod-source\core\sourcehook;D:\cs2dev\surfcombat-metamod-s2;hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies);kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;legacy_stdio_definitions.lib;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\lib\public\win64\tier0.lib;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\lib\public\win64\tier1.lib;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\lib\public\win64\mathlib.lib;D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\lib\public\win64\interfaces.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;legacy_stdio_definitions.lib;hl2sdk-cs2\lib\public\win64\tier0.lib;hl2sdk-cs2\lib\public\win64\tier1.lib;hl2sdk-cs2\lib\public\win64\mathlib.lib;hl2sdk-cs2\lib\public\win64\interfaces.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetFileName)</OutputFile>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -60,9 +60,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="D:\cs2dev\surfcombat-metamod-s2\src\sc_main.cpp" />
-    <ClCompile Include="D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\tier1\convar.cpp" />
-    <ClCompile Include="D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\memoverride.cpp" />
+    <ClCompile Include="src\sc_main.cpp" />
+    <ClCompile Include="hl2sdk-cs2\tier1\convar.cpp" />
+    <ClCompile Include="hl2sdk-cs2\public\tier0\memoverride.cpp" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
