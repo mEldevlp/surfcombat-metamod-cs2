@@ -31,7 +31,7 @@ for sdk_name in MMSPlugin.sdks:
     ]
     
     binary.sources += [
-      'sc_main.cpp',
+      'src\sc_main.cpp',
     ]
 
     if sdk_name in ['cs2']:

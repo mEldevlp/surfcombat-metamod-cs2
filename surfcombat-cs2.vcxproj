@@ -27,8 +27,8 @@
   <PropertyGroup Label="UserMacros">
   </PropertyGroup>
   <PropertyGroup>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Default|x64'">build\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Default|x64'">build\objs</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Default|x64'">compiled\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Default|x64'">compiled\objs</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Default|x64'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Default|x64'">surfcombat</TargetName>
   </PropertyGroup>
