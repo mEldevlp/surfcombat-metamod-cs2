@@ -15,7 +15,11 @@ git submodule update --init --recursive
 
 #### Linux
 ```sh
-todo
+git clone https://github.com/mEldevlp/surfcombat-metamod-cs2.git
+cd surfcombat-metamod-cs2
+mkdir build && cd build
+CC=gcc CXX=g++ python3 ../configure.py --hl2sdk-root "../" -s cs2
+ambuild
 ```
 
 #### Features
