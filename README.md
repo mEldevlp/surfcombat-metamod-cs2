@@ -29,3 +29,5 @@ ambuild
 - [ ] Deathmatch system
 - [ ] Admin\VIP system
 - [ ] Chat player prefix
+- [ ] Ranking
+- [ ] +strafe* (no-angle surfing)
