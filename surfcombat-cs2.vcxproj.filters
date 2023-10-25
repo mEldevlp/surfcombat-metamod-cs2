@@ -13,6 +13,9 @@
     <ClCompile Include="src\precompiled.cpp">
       <Filter>Source\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\sc_player.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -30,6 +33,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\precompiled.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sc_player.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

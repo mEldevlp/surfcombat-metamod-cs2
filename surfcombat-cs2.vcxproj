@@ -38,7 +38,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Default|x64'">
     <ClCompile>
       <AdditionalOptions>/DSE_CS2=25 /DSOURCE_ENGINE=25 /Zi /TP /std:c++17 /ignore:4005</AdditionalOptions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);metamod-source\core;metamod-source\core\sourcehook;($SolutionDir);hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);metamod-source\core;metamod-source\core\sourcehook;($SolutionDir);hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server;src\utils</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WINDOWS;COMPILER_MSVC;COMPILER_MSVC64;X64BITS;PLATFORM_64BITS;META_IS_SOURCE2</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>true</MinimalRebuild>
@@ -73,10 +73,12 @@
     <ClCompile Include="hl2sdk-cs2\public\tier0\memoverride.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Default|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\sc_player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\precompiled.h" />
     <ClInclude Include="src\sc_main.h" />
+    <ClInclude Include="src\sc_player.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
