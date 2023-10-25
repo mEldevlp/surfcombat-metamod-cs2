@@ -32,9 +32,12 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Default|x64'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Default|x64'">surfcombat</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Default|x64'">
+    <SourcePath>$(VC_SourcePath);</SourcePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Default|x64'">
     <ClCompile>
-      <AdditionalOptions>/DSE_CS2=25 /DSOURCE_ENGINE=25 /Zi /TP /std:c++17</AdditionalOptions>
+      <AdditionalOptions>/DSE_CS2=25 /DSOURCE_ENGINE=25 /Zi /TP /std:c++17 /ignore:4005</AdditionalOptions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);metamod-source\core;metamod-source\core\sourcehook;($SolutionDir);hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WINDOWS;COMPILER_MSVC;COMPILER_MSVC64;X64BITS;PLATFORM_64BITS;META_IS_SOURCE2</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
@@ -43,9 +46,9 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WINDOWS;SE_CS2=25;SOURCE_ENGINE=25;COMPILER_MSVC;COMPILER_MSVC64;X64BITS;PLATFORM_64BITS;META_IS_SOURCE2</PreprocessorDefinitions>
@@ -60,11 +63,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Default|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\sc_main.cpp" />
-    <ClCompile Include="hl2sdk-cs2\tier1\convar.cpp" />
-    <ClCompile Include="hl2sdk-cs2\public\tier0\memoverride.cpp" />
+    <ClCompile Include="hl2sdk-cs2\tier1\convar.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Default|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="hl2sdk-cs2\public\tier0\memoverride.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Default|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\precompiled.h" />
+    <ClInclude Include="src\sc_main.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

@@ -1,10 +1,4 @@
-#ifndef _INCLUDE_METAMOD_SOURCE_STUB_PLUGIN_H_
-#define _INCLUDE_METAMOD_SOURCE_STUB_PLUGIN_H_
-
-#include <ISmmPlugin.h>
-#include <igameevents.h>
-#include <iplayerinfo.h>
-#include <sh_vector.h>
+#include "precompiled.h"
 
 class SCPlugin : public ISmmPlugin, public IMetamodListener
 {
@@ -44,5 +38,3 @@ public:
 extern SCPlugin g_SamplePlugin;
 
 PLUGIN_GLOBALVARS();
-
-#endif //_INCLUDE_METAMOD_SOURCE_STUB_PLUGIN_H_

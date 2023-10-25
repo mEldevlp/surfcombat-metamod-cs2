@@ -1,3 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\sc_main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="hl2sdk-cs2\tier1\convar.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="hl2sdk-cs2\public\tier0\memoverride.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\precompiled.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{bf3c4ce9-97ee-4bcb-8388-bf2f5eec1f2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{68151011-2201-4857-96fb-d4e9c0687d5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{ddf48ef7-4d1e-4929-a3c3-f695cded83f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\sc_main.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\precompiled.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
