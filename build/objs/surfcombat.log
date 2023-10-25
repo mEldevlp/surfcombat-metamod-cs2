@@ -1,0 +1,62 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(516,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
+cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+cl : command line  warning D9030: '/Gm' is incompatible with multiprocessing; ignoring /MP switch
+  memoverride.cpp
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\memoverride.cpp(997,12): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  convar.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(49,1): warning C4005: 'INT8_MIN': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(314,1): message : see previous definition of 'INT8_MIN'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(50,1): warning C4005: 'INT16_MIN': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(317,1): message : see previous definition of 'INT16_MIN'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(51,1): warning C4005: 'INT32_MIN': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(320,1): message : see previous definition of 'INT32_MIN'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(52,1): warning C4005: 'INT64_MIN': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(323,1): message : see previous definition of 'INT64_MIN'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(53,1): warning C4005: 'INT8_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(301,1): message : see previous definition of 'INT8_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(54,1): warning C4005: 'INT16_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(304,1): message : see previous definition of 'INT16_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(55,1): warning C4005: 'INT32_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(307,1): message : see previous definition of 'INT32_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(56,1): warning C4005: 'INT64_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(310,1): message : see previous definition of 'INT64_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(57,1): warning C4005: 'UINT8_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(327,1): message : see previous definition of 'UINT8_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(58,1): warning C4005: 'UINT16_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(330,1): message : see previous definition of 'UINT16_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(59,1): warning C4005: 'UINT32_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(333,1): message : see previous definition of 'UINT32_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(60,1): warning C4005: 'UINT64_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(336,1): message : see previous definition of 'UINT64_MAX'
+  sc_main.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(49,1): warning C4005: 'INT8_MIN': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(314,1): message : see previous definition of 'INT8_MIN'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(50,1): warning C4005: 'INT16_MIN': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(317,1): message : see previous definition of 'INT16_MIN'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(51,1): warning C4005: 'INT32_MIN': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(320,1): message : see previous definition of 'INT32_MIN'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(52,1): warning C4005: 'INT64_MIN': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(323,1): message : see previous definition of 'INT64_MIN'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(53,1): warning C4005: 'INT8_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(301,1): message : see previous definition of 'INT8_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(54,1): warning C4005: 'INT16_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(304,1): message : see previous definition of 'INT16_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(55,1): warning C4005: 'INT32_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(307,1): message : see previous definition of 'INT32_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(56,1): warning C4005: 'INT64_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(310,1): message : see previous definition of 'INT64_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(57,1): warning C4005: 'UINT8_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(327,1): message : see previous definition of 'UINT8_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(58,1): warning C4005: 'UINT16_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(330,1): message : see previous definition of 'UINT16_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(59,1): warning C4005: 'UINT32_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(333,1): message : see previous definition of 'UINT32_MAX'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\stdint.h(60,1): warning C4005: 'UINT64_MAX': macro redefinition
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\tier0\platform.h(336,1): message : see previous definition of 'UINT64_MAX'
+D:\cs2dev\surfcombat-metamod-s2\hl2sdk-cs2\public\igameevents.h(72,53): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+tier1.lib(strtools.obj) : warning LNK4099: PDB '' was not found with 'tier1.lib(strtools.obj)' or at ''; linking object as if no debug info
+tier1.lib(characterset.obj) : warning LNK4099: PDB '' was not found with 'tier1.lib(characterset.obj)' or at ''; linking object as if no debug info
+interfaces.lib(interfaces.obj) : warning LNK4099: PDB '' was not found with 'interfaces.lib(interfaces.obj)' or at ''; linking object as if no debug info
+     Creating library build\surfcombat.lib and object build\surfcombat.exp
+  surfcombat.vcxproj -> D:\cs2dev\surfcombat-metamod-s2\build\surfcombat.dll
