@@ -2,7 +2,7 @@
 #include "dbg.h"
 #include "interface.h"
 #include "strtools.h"
-#include <plat.h>
+#include "plat.h"
 
 #ifdef _WIN32
 #include <Psapi.h>

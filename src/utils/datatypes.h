@@ -5,9 +5,9 @@ typedef int32_t GameTick_t;
 typedef float GameTime_t;
 typedef uint64_t CNetworkedQuantizedFloat;
 
+
 #include "utlsymbollarge.h"
 #include "ihandleentity.h"
-
 #ifndef _WIN32
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wparentheses"

@@ -1,209 +1,178 @@
-#include "precompiled.h"
+#include "sc_main.h"
 
-SH_DECL_HOOK3_void(IServerGameDLL, GameFrame, SH_NOATTRIB, 0, bool, bool, bool);
-SH_DECL_HOOK4_void(IServerGameClients, ClientActive, SH_NOATTRIB, 0, CPlayerSlot, bool, const char *, uint64);
-SH_DECL_HOOK5_void(IServerGameClients, ClientDisconnect, SH_NOATTRIB, 0, CPlayerSlot, int, const char *, uint64, const char *);
-SH_DECL_HOOK4_void(IServerGameClients, ClientPutInServer, SH_NOATTRIB, 0, CPlayerSlot, char const *, int, uint64);
-SH_DECL_HOOK1_void(IServerGameClients, ClientSettingsChanged, SH_NOATTRIB, 0, CPlayerSlot );
-SH_DECL_HOOK6_void(IServerGameClients, OnClientConnected, SH_NOATTRIB, 0, CPlayerSlot, const char*, uint64, const char *, const char *, bool);
-SH_DECL_HOOK6(IServerGameClients, ClientConnect, SH_NOATTRIB, 0, bool, CPlayerSlot, const char*, uint64, const char *, bool, CBufferString *);
-SH_DECL_HOOK2(IGameEventManager2, FireEvent, SH_NOATTRIB, 0, bool, IGameEvent *, bool);
+#include "interface.h"
+#include "icvar.h"
+#include "entity2/entitysystem.h"
 
-SH_DECL_HOOK2_void( IServerGameClients, ClientCommand, SH_NOATTRIB, 0, CPlayerSlot, const CCommand & );
+#include "common.h"
+#include "utils/utils.h"
+#include "utils/recipientfilters.h"
+#include "utils/detours.h"
+#include "utils/addresses.h"
+#include "utils/simplecmds.h"
 
-SCPlugin g_SCPlugin;
-IServerGameDLL *server = NULL;
-IServerGameClients *gameclients = NULL;
-IVEngineServer *engine = NULL;
-IGameEventManager2 *gameevents = NULL;
-ICvar *icvar = NULL;
+#include "movement/movement.h"
+#include "surf/surf.h"
 
-// Should only be called within the active game loop (i e map should be loaded and active)
-// otherwise that'll be nullptr!
-CGlobalVars *GetGameGlobals()
-{
-	INetworkGameServer *server = g_pNetworkServerService->GetIGameServer();
+#include "tier0/memdbgon.h"
 
-	if(!server)
-		return nullptr;
+SURFPlugin g_SURFPlugin;
 
-	return g_pNetworkServerService->GetIGameServer()->GetGlobals();
-}
+SH_DECL_HOOK2_void(ISource2GameClients, ClientCommand, SH_NOATTRIB, false, CPlayerSlot, const CCommand&);
+SH_DECL_HOOK6_void(ISource2GameEntities, CheckTransmit, SH_NOATTRIB, false, CCheckTransmitInfo**, int, CBitVec<16384>&, const Entity2Networkable_t **, const uint16 *, int);
+SH_DECL_HOOK3_void(ISource2Server, GameFrame, SH_NOATTRIB, false, bool, bool, bool);
+SH_DECL_HOOK5(ISource2GameClients, ProcessUsercmds, SH_NOATTRIB, false, float, CPlayerSlot, bf_read *, int, bool, bool);
+SH_DECL_HOOK2_void(CEntitySystem, Spawn, SH_NOATTRIB, false, int, const EntitySpawnInfo_t *);
+SH_DECL_HOOK4_void(ISource2GameClients, ClientPutInServer, SH_NOATTRIB, 0, CPlayerSlot, char const *, int, uint64)
 
-#if 0
-// Currently unavailable, requires hl2sdk work!
-ConVar sample_cvar("sample_cvar", "42", 0);
-#endif
+CEntitySystem *g_pEntitySystem = NULL;
 
-CON_COMMAND_F(sample_command, "Sample command", FCVAR_NONE)
-{
-	META_CONPRINTF( "Sample command called by %d. Command: %s\n", context.GetPlayerSlot(), args.GetCommandString() );
-}
+PLUGIN_EXPOSE(SURFPlugin, g_SURFPlugin);
 
-PLUGIN_EXPOSE(SCPlugin, g_SCPlugin);
-bool SCPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
+bool SURFPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 {
 	PLUGIN_SAVEVARS();
-
-	GET_V_IFACE_CURRENT(GetEngineFactory, engine, IVEngineServer, INTERFACEVERSION_VENGINESERVER);
-	GET_V_IFACE_CURRENT(GetEngineFactory, icvar, ICvar, CVAR_INTERFACE_VERSION);
-	GET_V_IFACE_ANY(GetServerFactory, server, IServerGameDLL, INTERFACEVERSION_SERVERGAMEDLL);
-	GET_V_IFACE_ANY(GetServerFactory, gameclients, IServerGameClients, INTERFACEVERSION_SERVERGAMECLIENTS);
-	GET_V_IFACE_ANY(GetEngineFactory, g_pNetworkServerService, INetworkServerService, NETWORKSERVERSERVICE_INTERFACE_VERSION);
-
-	// Currently doesn't work from within mm side, use GetGameGlobals() in the mean time instead
-	// gpGlobals = ismm->GetCGlobals();
-
-	META_CONPRINTF( "Starting plugin.\n" );
-
-	SH_ADD_HOOK_MEMFUNC(IServerGameDLL, GameFrame, server, this, &SCPlugin::Hook_GameFrame, true);
-	SH_ADD_HOOK_MEMFUNC(IServerGameClients, ClientActive, gameclients, this, &SCPlugin::Hook_ClientActive, true);
-	SH_ADD_HOOK_MEMFUNC(IServerGameClients, ClientDisconnect, gameclients, this, &SCPlugin::Hook_ClientDisconnect, true);
-	SH_ADD_HOOK_MEMFUNC(IServerGameClients, ClientPutInServer, gameclients, this, &SCPlugin::Hook_ClientPutInServer, true);
-	SH_ADD_HOOK_MEMFUNC(IServerGameClients, ClientSettingsChanged, gameclients, this, &SCPlugin::Hook_ClientSettingsChanged, false);
-	SH_ADD_HOOK_MEMFUNC(IServerGameClients, OnClientConnected, gameclients, this, &SCPlugin::Hook_OnClientConnected, false);
-	SH_ADD_HOOK_MEMFUNC( IServerGameClients, ClientConnect, gameclients, this, &SCPlugin::Hook_ClientConnect, false );
-	SH_ADD_HOOK_MEMFUNC(IServerGameClients, ClientCommand, gameclients, this, &SCPlugin::Hook_ClientCommand, false);
-
-	META_CONPRINTF( "All hooks started!\n" );
-
-	g_pCVar = icvar;
-	ConVar_Register( FCVAR_RELEASE | FCVAR_CLIENT_CAN_EXECUTE | FCVAR_GAMEDLL );
+	
+	if (!utils::Initialize(ismm, error, maxlen))
+	{
+		return false;
+	}
+	movement::InitDetours();
+	
+	SH_ADD_HOOK(ISource2GameClients, ClientCommand, g_pSource2GameClients, SH_STATIC(Hook_ClientCommand), false);
+	SH_ADD_HOOK(ISource2Server, GameFrame, interfaces::pServer, SH_STATIC(Hook_GameFrame), false);
+	SH_ADD_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Pre), false);
+	SH_ADD_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Post), true);
+	SH_ADD_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_STATIC(Hook_CheckTransmit), true);
+	SH_ADD_HOOK(ISource2GameClients, ClientPutInServer, g_pSource2GameClients, SH_STATIC(Hook_ClientPutInServer), false);
+	
+	SURF::misc::RegisterCommands();
 
 	return true;
 }
 
-bool SCPlugin::Unload(char *error, size_t maxlen)
+bool SURFPlugin::Unload(char *error, size_t maxlen)
 {
-	SH_REMOVE_HOOK_MEMFUNC(IServerGameDLL, GameFrame, server, this, &SCPlugin::Hook_GameFrame, true);
-	SH_REMOVE_HOOK_MEMFUNC(IServerGameClients, ClientActive, gameclients, this, &SCPlugin::Hook_ClientActive, true);
-	SH_REMOVE_HOOK_MEMFUNC(IServerGameClients, ClientDisconnect, gameclients, this, &SCPlugin::Hook_ClientDisconnect, true);
-	SH_REMOVE_HOOK_MEMFUNC(IServerGameClients, ClientPutInServer, gameclients, this, &SCPlugin::Hook_ClientPutInServer, true);
-	SH_REMOVE_HOOK_MEMFUNC(IServerGameClients, ClientSettingsChanged, gameclients, this, &SCPlugin::Hook_ClientSettingsChanged, false);
-	SH_REMOVE_HOOK_MEMFUNC(IServerGameClients, OnClientConnected, gameclients, this, &SCPlugin::Hook_OnClientConnected, false);
-	SH_REMOVE_HOOK_MEMFUNC(IServerGameClients, ClientConnect, gameclients, this, &SCPlugin::Hook_ClientConnect, false);
-	SH_REMOVE_HOOK_MEMFUNC(IServerGameClients, ClientCommand, gameclients, this, &SCPlugin::Hook_ClientCommand, false);
+	SH_REMOVE_HOOK(ISource2GameClients, ClientCommand, g_pSource2GameClients, SH_STATIC(Hook_ClientCommand), false);
+	SH_REMOVE_HOOK(ISource2Server, GameFrame, interfaces::pServer, SH_STATIC(Hook_GameFrame), false);
+	SH_REMOVE_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Pre), false);
+	SH_REMOVE_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Post), true);
+	SH_REMOVE_HOOK(CEntitySystem, Spawn, g_pEntitySystem, SH_STATIC(Hook_CEntitySystem_Spawn_Post), true);
+	SH_ADD_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_STATIC(Hook_CheckTransmit), true);
+	SH_REMOVE_HOOK(ISource2GameClients, ClientPutInServer, g_pSource2GameClients, SH_STATIC(Hook_ClientPutInServer), false);
 
+	
+	utils::Cleanup();
 	return true;
 }
 
-void SCPlugin::AllPluginsLoaded()
+void SURFPlugin::AllPluginsLoaded()
 {
-	/* This is where we'd do stuff that relies on the mod or other plugins 
-	 * being initialized (for example, cvars added and events registered).
-	 */
 }
 
-void SCPlugin::Hook_ClientActive( CPlayerSlot slot, bool bLoadGame, const char *pszName, uint64 xuid )
-{
-	META_CONPRINTF( "Hook_ClientActive(%d, %d, \"%s\", %d)\n", slot, bLoadGame, pszName, xuid );
-}
-
-void SCPlugin::Hook_ClientCommand( CPlayerSlot slot, const CCommand &args )
-{
-	META_CONPRINTF( "Hook_ClientCommand(%d, \"%s\")\n", slot, args.GetCommandString() );
-}
-
-void SCPlugin::Hook_ClientSettingsChanged( CPlayerSlot slot )
-{
-	META_CONPRINTF( "Hook_ClientSettingsChanged(%d)\n", slot );
-}
-
-void SCPlugin::Hook_OnClientConnected( CPlayerSlot slot, const char *pszName, uint64 xuid, const char *pszNetworkID, const char *pszAddress, bool bFakePlayer )
-{
-	META_CONPRINTF( "Hook_OnClientConnected(%d, \"%s\", %d, \"%s\", \"%s\", %d)\n", slot, pszName, xuid, pszNetworkID, pszAddress, bFakePlayer );
-}
-
-bool SCPlugin::Hook_ClientConnect( CPlayerSlot slot, const char *pszName, uint64 xuid, const char *pszNetworkID, bool unk1, CBufferString *pRejectReason )
-{
-	META_CONPRINTF( "Hook_ClientConnect(%d, \"%s\", %d, \"%s\", %d, \"%s\")\n", slot, pszName, xuid, pszNetworkID, unk1, pRejectReason->ToGrowable()->Get() );
-
-	RETURN_META_VALUE(MRES_IGNORED, true);
-}
-
-void SCPlugin::Hook_ClientPutInServer( CPlayerSlot slot, char const *pszName, int type, uint64 xuid )
-{
-	META_CONPRINTF( "Hook_ClientPutInServer(%d, \"%s\", %d, %d, %d)\n", slot, pszName, type, xuid );
-}
-
-void SCPlugin::Hook_ClientDisconnect( CPlayerSlot slot, int reason, const char *pszName, uint64 xuid, const char *pszNetworkID )
-{
-	META_CONPRINTF( "Hook_ClientDisconnect(%d, %d, \"%s\", %d, \"%s\")\n", slot, reason, pszName, xuid, pszNetworkID );
-}
-
-void SCPlugin::Hook_GameFrame( bool simulating, bool bFirstTick, bool bLastTick )
-{
-	/**
-	 * simulating:
-	 * ***********
-	 * true  | game is ticking
-	 * false | game is not ticking
-	 */
-}
-
-// Potentially might not work
-void SCPlugin::OnLevelInit( char const *pMapName,
-									 char const *pMapEntities,
-									 char const *pOldLevel,
-									 char const *pLandmarkName,
-									 bool loadGame,
-									 bool background )
-{
-	META_CONPRINTF("OnLevelInit(%s)\n", pMapName);
-}
-
-// Potentially might not work
-void SCPlugin::OnLevelShutdown()
-{
-	META_CONPRINTF("OnLevelShutdown()\n");
-}
-
-bool SCPlugin::Pause(char *error, size_t maxlen)
+bool SURFPlugin::Pause(char *error, size_t maxlen)
 {
 	return true;
 }
 
-bool SCPlugin::Unpause(char *error, size_t maxlen)
+bool SURFPlugin::Unpause(char *error, size_t maxlen)
 {
 	return true;
 }
 
-const char *SCPlugin::GetLicense()
+const char *SURFPlugin::GetLicense()
 {
 	return "MIT License";
 }
 
-const char *SCPlugin::GetVersion()
+const char *SURFPlugin::GetVersion()
 {
 	return "0.1-a";
 }
 
-const char *SCPlugin::GetDate()
+const char *SURFPlugin::GetDate()
 {
 	return __DATE__;
 }
 
-const char *SCPlugin::GetLogTag()
+const char *SURFPlugin::GetLogTag()
 {
-	return "Surf";
+	return "SURF";
 }
 
-const char *SCPlugin::GetAuthor()
+const char *SURFPlugin::GetAuthor()
 {
-	return "\\mEl\\";
+	return "\\mEl\\ & zer0.k";
 }
 
-const char *SCPlugin::GetDescription()
+const char *SURFPlugin::GetDescription()
 {
-	return "Surf Combat for CS2";
+	return "Surf Combat Mod";
 }
 
-const char *SCPlugin::GetName()
+const char *SURFPlugin::GetName()
 {
-	return "SurfCombat";
+	return "CS2SURF";
 }
 
-const char *SCPlugin::GetURL()
+const char *SURFPlugin::GetURL()
 {
-	return "http://www.sourcemm.net/";
+	return "https://github.com/mEldevlp/surfcombat-metamod-cs2/";
+}
+
+internal float Hook_ProcessUsercmds_Pre(CPlayerSlot slot, bf_read *buf, int numcmds, bool ignore, bool paused)
+{
+	RETURN_META_VALUE(MRES_IGNORED, 0.0f);
+}
+
+internal float Hook_ProcessUsercmds_Post(CPlayerSlot slot, bf_read *buf, int numcmds, bool ignore, bool paused)
+{
+	SURF::HUD::OnProcessUsercmds_Post(slot, buf, numcmds, ignore, paused);
+	RETURN_META_VALUE(MRES_IGNORED, 0.0f);
+}
+
+internal void Hook_CEntitySystem_Spawn_Post(int nCount, const EntitySpawnInfo_t *pInfo_DontUse)
+{
+	EntitySpawnInfo_t *pInfo = (EntitySpawnInfo_t *)pInfo_DontUse;
+	
+	for (i32 i = 0; i < nCount; i++)
+	{
+		if (pInfo && pInfo[i].m_pEntity)
+		{
+
+			// do stuff with spawning entities!
+		}
+	}
+}
+
+internal void Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)
+{
+	if (!g_pEntitySystem)
+	{
+		g_pEntitySystem = interfaces::pGameResourceServiceServer->GetGameEntitySystem();
+		assert(g_pEntitySystem);
+		SH_ADD_HOOK(CEntitySystem, Spawn, g_pEntitySystem, SH_STATIC(Hook_CEntitySystem_Spawn_Post), true);
+	}
+	RETURN_META(MRES_IGNORED);
+}
+
+internal void Hook_ClientCommand(CPlayerSlot slot, const CCommand& args)
+{
+	if (META_RES result = scmd::OnClientCommand(slot, args))
+	{
+		RETURN_META(result);
+	}
+	RETURN_META(MRES_IGNORED);
+}
+
+internal void Hook_CheckTransmit(CCheckTransmitInfo **pInfo, int infoCount, CBitVec<16384> &, const Entity2Networkable_t **pNetworkables, const uint16 *pEntityIndicies, int nEntities)
+{
+	SURF::misc::OnCheckTransmit(pInfo, infoCount);
+	RETURN_META(MRES_IGNORED);
+}
+
+internal void Hook_ClientPutInServer(CPlayerSlot slot, char const *pszName, int type, uint64 xuid)
+{
+	SURF::misc::OnClientPutInServer(slot);
+	RETURN_META(MRES_IGNORED);
 }

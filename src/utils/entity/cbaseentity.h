@@ -1,6 +1,6 @@
 #pragma once
 
-#include <schema.h>
+#include "utils/schema.h"
 #include "mathlib/vector.h"
 #include "baseentity.h"
 #include "ccollisionproperty.h"

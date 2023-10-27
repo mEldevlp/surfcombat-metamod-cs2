@@ -47,5 +47,4 @@ namespace utils
 	void PrintChatAll(const char *format, ...);
 	void PrintCentreAll(const char *format, ...);
 	void PrintAlertAll(const char *format, ...);
-
 }

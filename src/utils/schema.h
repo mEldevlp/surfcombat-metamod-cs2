@@ -12,10 +12,10 @@
 #pragma warning(pop)
 #endif
 
-#include <addresses.h>
+#include "addresses.h"
 #include "tier0/dbg.h"
 #include "const.h"
-#include <virtual.h>
+#include "virtual.h"
 #include "stdint.h"
 
 #undef schema
