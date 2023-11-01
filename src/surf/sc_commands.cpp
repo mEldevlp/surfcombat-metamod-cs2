@@ -5,68 +5,32 @@
 
 #include "tier0/memdbgon.h"
 
-
-internal SCMD_CALLBACK(Command_SURFNoclip)
+internal SCMD_CALLBACK(Command_SCNoclip)
 {
 	SURFPlayer *player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
 	player->ToggleNoclip();
 	return MRES_SUPERCEDE;
 }
 
-internal SCMD_CALLBACK(Command_SURFHidelegs)
+internal SCMD_CALLBACK(Command_SCHidelegs)
 {
 	SURFPlayer *player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
 	player->UpdatePlayerModelAlpha();
 	return MRES_SUPERCEDE;
 }
 
-internal SCMD_CALLBACK(Command_SURFCheckpoint)
-{
-	SURFPlayer *player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
-	player->SetCheckpoint();
-	return MRES_SUPERCEDE;
-}
-
-internal SCMD_CALLBACK(Command_SURFTeleport)
-{
-	SURFPlayer *player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
-	player->TpToCheckpoint();
-	return MRES_SUPERCEDE;
-}
-
-internal SCMD_CALLBACK(Command_SURFPrevcp)
-{
-	SURFPlayer *player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
-	player->TpToPrevCp();
-	return MRES_SUPERCEDE;
-}
-
-internal SCMD_CALLBACK(Command_SURFNextcp)
-{
-	SURFPlayer *player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
-	player->TpToNextCp();
-	return MRES_SUPERCEDE;
-}
-
-internal SCMD_CALLBACK(Command_SURFHide)
+internal SCMD_CALLBACK(Command_SCHide)
 {
 	SURFPlayer *player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
 	player->ToggleHide();
 	return MRES_SUPERCEDE;
 }
 
-internal SCMD_CALLBACK(Command_SURFStrafe)
-{
-	SURFPlayer* player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
-	player->ToggleInStrafe();
-	return MRES_SUPERCEDE;
-}
-
 void SURF::misc::RegisterCommands()
 {
-	scmd::RegisterCmd("sc_legs",			Command_SURFHidelegs);
-	scmd::RegisterCmd("sc_hide",			Command_SURFHide);
-	//scmd::RegisterCmd("SURF_strafe",		Command_SURFStrafe);
+	scmd::RegisterCmd("sc_noclip",     Command_SCNoclip); // For debug. Not inlcuded in release
+	scmd::RegisterCmd("sc_hidelegs",   Command_SCHidelegs);
+	scmd::RegisterCmd("sc_hide",	   Command_SCHide);
 }
 
 void SURF::misc::OnCheckTransmit(CCheckTransmitInfo **pInfo, int infoCount)

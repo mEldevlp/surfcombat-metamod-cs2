@@ -4,7 +4,7 @@
 CSURFPlayerManager g_SURFPlayerManager;
 CMovementPlayerManager *g_pPlayerManager = dynamic_cast<CMovementPlayerManager *>(&g_SURFPlayerManager);
 
-CSURFPlayerManager *SURF::GetSURFPlayerManager()
+CSURFPlayerManager* SURF::GetSURFPlayerManager()
 {
 	return static_cast<CSURFPlayerManager *>(g_pPlayerManager);
 }

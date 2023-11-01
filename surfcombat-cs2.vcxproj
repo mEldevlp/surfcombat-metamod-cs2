@@ -7,10 +7,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4A0E2D51-74B5-11EE-A9A2-04421AADB879}</ProjectGuid>
-    <RootNamespace>cs2surf</RootNamespace>
+    <ProjectGuid>{9EDDF8D7-7874-11EE-98D5-04421AADB879}</ProjectGuid>
+    <RootNamespace>cs2kz</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>surfcombat-cs2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Default|x64'" Label="Configuration">
@@ -27,15 +28,15 @@
   <PropertyGroup Label="UserMacros">
   </PropertyGroup>
   <PropertyGroup>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Default|x64'">compiled\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Default|x64'">compiled\objects</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Default|x64'">Compiled\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Default|x64'">Compiled\OBJ</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Default|x64'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Default|x64'">surfcombatcs2</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Default|x64'">
     <ClCompile>
       <AdditionalOptions>/DSE_CS2=25 /DSOURCE_ENGINE=25 /Zi /TP /std:c++17</AdditionalOptions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);metamod-source\core;metamod-source\core\sourcehook;D:\cs2dev\cs2surfcombat;hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server;vendor\subhook;vendor\funchook\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);metamod-source\core;metamod-source\core\sourcehook;($SolutionDir);hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server;vendor\subhook;vendor\funchook\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WINDOWS;COMPILER_MSVC;COMPILER_MSVC64;X64BITS;PLATFORM_64BITS;META_IS_SOURCE2</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>true</MinimalRebuild>
@@ -49,11 +50,11 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WINDOWS;SE_CS2=25;SOURCE_ENGINE=25;COMPILER_MSVC;COMPILER_MSVC64;X64BITS;PLATFORM_64BITS;META_IS_SOURCE2</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\cs2dev\cs2surfcombat\metamod-source\core;D:\cs2dev\cs2surfcombat\metamod-source\core\sourcehook;D:\cs2dev\cs2surfcombat;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\public;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\public\engine;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\public\mathlib;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\public\vstdlib;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\public\tier0;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\public\tier1;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\public\game\server;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\game\shared;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\common;D:\cs2dev\cs2surfcombat\src;D:\cs2dev\cs2surfcombat\hl2sdk-cs2;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\public\entity2;D:\cs2dev\cs2surfcombat\hl2sdk-cs2\game\server;D:\cs2dev\cs2surfcombat\vendor\subhook;D:\cs2dev\cs2surfcombat\vendor\funchook\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>metamod-source\core;metamod-source\core\sourcehook;C:\cs2_dev\cs2kz_metamod;hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server;vendor\subhook;vendor\funchook\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies);kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;legacy_stdio_definitions.lib;hl2sdk-cs2\lib\public\win64\tier0.lib;hl2sdk-cs2\lib\public\win64\tier1.lib;hl2sdk-cs2\lib\public\win64\mathlib.lib;hl2sdk-cs2\lib\public\win64\interfaces.lib;psapi.lib;vendor\funchook\lib\funchook.lib;vendor\funchook\lib\distorm.lib</AdditionalDependencies>
-      <OutputFile>$(OutDir)surfcombatcs2.dll</OutputFile>
+      <OutputFile>$(OutDir)$(TargetFileName)</OutputFile>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX64</TargetMachine>
@@ -63,6 +64,7 @@
     <ClCompile Include="src\utils\plat_win.cpp" />
     <ClCompile Include="src\sc_main.cpp" />
     <ClCompile Include="hl2sdk-cs2\entity2\entitysystem.cpp" />
+    <ClCompile Include="hl2sdk-cs2\tier1\generichash.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
     <ClCompile Include="src\utils\detours.cpp" />
     <ClCompile Include="src\utils\schema.cpp" />
@@ -70,7 +72,7 @@
     <ClCompile Include="src\movement\mv_hooks.cpp" />
     <ClCompile Include="src\movement\mv_manager.cpp" />
     <ClCompile Include="src\movement\mv_player.cpp" />
-    <ClCompile Include="src\surf\hud.cpp" />
+    <ClCompile Include="src\surf\sc_hud.cpp" />
     <ClCompile Include="src\surf\sc_commands.cpp" />
     <ClCompile Include="src\surf\sc_manager.cpp" />
     <ClCompile Include="src\surf\sc_player.cpp" />
@@ -78,6 +80,9 @@
     <ClCompile Include="hl2sdk-cs2\public\tier0\memoverride.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\surf\surf.h" />
+    <ClInclude Include="src\movement\movement.h" />
+    <ClInclude Include="src\sc_main.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 #include "common.h"
 
-class SURFPlugin : public ISmmPlugin, public IMetamodListener
+class SurfPlugin : public ISmmPlugin, public IMetamodListener
 {
 public:
 	bool Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late);
@@ -21,7 +21,7 @@ public:
 	const char *GetLogTag();
 };
 
-extern SURFPlugin g_SURFPlugin;
+extern SurfPlugin g_SurfPlugin;
 
 internal void Hook_ClientCommand(CPlayerSlot slot, const CCommand& args);
 internal void Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick);

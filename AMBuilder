@@ -20,6 +20,9 @@ for sdk_name in MMSPlugin.sdks:
     elif binary.compiler.family == 'msvc':
       binary.compiler.cxxflags += ['/std:c++17']
 
+    if binary.compiler.family == 'clang':
+      binary.compiler.cxxflags += ['-Wno-register']
+
     binary.compiler.cxxincludes += [
       os.path.join(builder.sourcePath, 'src'),
       os.path.join(builder.sourcePath, 'hl2sdk-cs2'),
@@ -33,6 +36,7 @@ for sdk_name in MMSPlugin.sdks:
       binary.compiler.postlink += [
         os.path.join(builder.sourcePath, 'vendor', 'funchook', 'lib', 'libfunchook.a'),
         os.path.join(builder.sourcePath, 'vendor', 'funchook', 'lib', 'libdistorm.a'),
+        os.path.join(sdk.path, 'lib', 'linux64', 'mathlib.a'),
       ] 
       binary.sources += ['src/utils/plat_linux.cpp']
     elif binary.compiler.target.platform == 'windows':
@@ -46,6 +50,7 @@ for sdk_name in MMSPlugin.sdks:
     binary.sources += [
       os.path.join(builder.sourcePath, 'src', 'sc_main.cpp'),
       os.path.join(sdk.path, 'entity2', 'entitysystem.cpp'),
+      os.path.join(sdk.path, 'tier1', 'generichash.cpp'),
       os.path.join(builder.sourcePath, 'src', 'utils', 'utils.cpp'),
       os.path.join(builder.sourcePath, 'src', 'utils', 'detours.cpp'),
       os.path.join(builder.sourcePath, 'src', 'utils', 'schema.cpp'),
@@ -53,8 +58,8 @@ for sdk_name in MMSPlugin.sdks:
       os.path.join(builder.sourcePath, 'src', 'movement', 'mv_hooks.cpp'),
       os.path.join(builder.sourcePath, 'src', 'movement', 'mv_manager.cpp'),
       os.path.join(builder.sourcePath, 'src', 'movement', 'mv_player.cpp'),
-      os.path.join(builder.sourcePath, 'src', 'surf', 'hud.cpp'),
-      os.path.join(builder.sourcePath, 'src', 'surf', 'misc.cpp'),
+      os.path.join(builder.sourcePath, 'src', 'surf', 'sc_hud.cpp'),
+      os.path.join(builder.sourcePath, 'src', 'surf', 'sc_commands.cpp'),
       os.path.join(builder.sourcePath, 'src', 'surf', 'sc_manager.cpp'),
       os.path.join(builder.sourcePath, 'src', 'surf', 'sc_player.cpp'),
     ]

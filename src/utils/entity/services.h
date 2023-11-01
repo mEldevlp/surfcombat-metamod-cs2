@@ -22,7 +22,7 @@ class CPlayer_MovementServices : public CPlayerPawnComponent
 {
 public:
 	DECLARE_SCHEMA_CLASS(CPlayer_MovementServices);
-	SCHEMA_FIELD(CInButtonState, m_nButtons)
+	SCHEMA_FIELD_POINTER(CInButtonState, m_nButtons)
 };
 
 class CPlayer_MovementServices_Humanoid : public CPlayer_MovementServices
@@ -30,6 +30,7 @@ class CPlayer_MovementServices_Humanoid : public CPlayer_MovementServices
 public:
 	DECLARE_SCHEMA_CLASS(CPlayer_MovementServices_Humanoid);
 	SCHEMA_FIELD(bool, m_bDucked)
+	SCHEMA_FIELD(float, m_flSurfaceFriction)
 };
 
 class CCSPlayer_MovementServices : public CPlayer_MovementServices_Humanoid
@@ -37,6 +38,7 @@ class CCSPlayer_MovementServices : public CPlayer_MovementServices_Humanoid
 public:
 	DECLARE_SCHEMA_CLASS(CCSPlayer_MovementServices);
 	SCHEMA_FIELD(float, m_flJumpUntil)
+	SCHEMA_FIELD(Vector, m_vecLadderNormal)
 };
 
 class CCSPlayer_ItemServices

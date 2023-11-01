@@ -1,11 +1,7 @@
 #include "movement.h"
-#include "../surf/surf.h"
 #include "utils/detours.h"
 
 #include "tier0/memdbgon.h"
-
-#define PI 3.14159265358979323846
-#define EPSILON .05f
 
 void movement::InitDetours()
 {
@@ -31,7 +27,6 @@ void movement::InitDetours()
 	INIT_DETOUR(CheckFalling);
 	INIT_DETOUR(PlayerMovePost);
 	INIT_DETOUR(PostThink);
-	//INIT_DETOUR(CalcRoll);
 }
 
 f32 FASTCALL movement::Detour_GetMaxSpeed(CCSPlayerPawn *pawn)
@@ -39,27 +34,14 @@ f32 FASTCALL movement::Detour_GetMaxSpeed(CCSPlayerPawn *pawn)
 	return GetMaxSpeed(pawn);
 }
 
-void FASTCALL movement::Detour_ProcessMovement(CCSPlayer_MovementServices* ms, CMoveData* mv)
+void FASTCALL movement::Detour_ProcessMovement(CCSPlayer_MovementServices *ms, CMoveData *mv)
 {
 	MovementPlayer *player = g_pPlayerManager->ToPlayer(ms);
 	player->currentMoveData = mv;
-	player->currentMoveServices = ms;
 	player->moveDataPre = CMoveData(*mv);
-
 	player->OnStartProcessMovement();
 	ProcessMovement(ms, mv);
 	player->moveDataPost = CMoveData(*mv);
-	/*
-	auto surf_player = dynamic_cast<SURFPlayer*>(player);
-
-	if (surf_player->inNoAngle)
-	{
-		surf_player->currentMoveData->m_vecAbsOrigin.x += surf_player->lastAngles.x - surf_player->currentMoveData->m_vecViewAngles.x + EPSILON;
-		surf_player->currentMoveData->m_vecAbsOrigin.y += surf_player->lastAngles.y - surf_player->currentMoveData->m_vecViewAngles.y + EPSILON;
-
-		vmt::CallVirtual<void>(offsets::Teleport, player->GetPawn(), &surf_player->currentMoveData->m_vecAbsOrigin, &surf_player->lastAngles, nullptr);
-	}*/
-
 	player->OnStopProcessMovement();
 }
 
@@ -108,6 +90,7 @@ void FASTCALL movement::Detour_Duck(CCSPlayer_MovementServices *ms, CMoveData *m
 
 bool FASTCALL movement::Detour_LadderMove(CCSPlayer_MovementServices *ms, CMoveData *mv)
 {
+	/*
 	Vector oldVelocity = mv->m_vecVelocity;
 	bool result = LadderMove(ms, mv);
 	MovementPlayer *player = g_pPlayerManager->ToPlayer(ms);
@@ -137,8 +120,8 @@ bool FASTCALL movement::Detour_LadderMove(CCSPlayer_MovementServices *ms, CMoveD
 			player->takeoffFromLadder = true;
 			player->OnChangeMoveType(MOVETYPE_LADDER);
 		}
-	}
-	return result;
+	}*/
+	return true;
 }
 
 void FASTCALL movement::Detour_CheckJumpButton(CCSPlayer_MovementServices *ms, CMoveData *mv)
@@ -148,6 +131,7 @@ void FASTCALL movement::Detour_CheckJumpButton(CCSPlayer_MovementServices *ms, C
 
 void FASTCALL movement::Detour_OnJump(CCSPlayer_MovementServices *ms, CMoveData *mv)
 {
+	/*
 	MovementPlayer *player = g_pPlayerManager->ToPlayer(ms);
 	f32 oldJumpUntil = ms->m_flJumpUntil();
 	MoveType_t oldMoveType = player->GetPawn()->m_MoveType();
@@ -157,7 +141,7 @@ void FASTCALL movement::Detour_OnJump(CCSPlayer_MovementServices *ms, CMoveData 
 		player->hitPerf = (oldMoveType != MOVETYPE_LADDER && !player->oldWalkMoved);
 		player->RegisterTakeoff(true);
 		player->OnStopTouchGround();
-	}
+	}*/
 }
 
 void FASTCALL movement::Detour_AirAccelerate(CCSPlayer_MovementServices *ms, CMoveData *mv, Vector &wishdir, f32 wishspeed, f32 accel)
@@ -187,6 +171,7 @@ void FASTCALL movement::Detour_TryPlayerMove(CCSPlayer_MovementServices *ms, CMo
 
 void FASTCALL movement::Detour_CategorizePosition(CCSPlayer_MovementServices *ms, CMoveData *mv, bool bStayOnGround)
 {
+	/*
 	MovementPlayer *player = g_pPlayerManager->ToPlayer(ms);
 	Vector oldVelocity = mv->m_vecVelocity;
 	bool oldOnGround = !!(player->GetPawn()->m_fFlags() & FL_ONGROUND);
@@ -208,7 +193,7 @@ void FASTCALL movement::Detour_CategorizePosition(CCSPlayer_MovementServices *ms
 			player->RegisterTakeoff(false);
 			player->OnStopTouchGround();
 		}
-	}
+	}*/
 }
 
 void FASTCALL movement::Detour_FinishGravity(CCSPlayer_MovementServices *ms, CMoveData *mv)
@@ -230,9 +215,3 @@ void FASTCALL movement::Detour_PostThink(CCSPlayerPawnBase *pawn)
 {
 	PostThink(pawn);
 }
-/*
-f32 FASTCALL movement::Detour_CalcRoll(CCSPlayer_MovementServices* ms, CMoveData* mv, const QAngle& angles, const Vector& velocity, float rollangle, float rollspeed)
-{
-	return CalcRoll(ms, mv, angles, velocity, rollangle, rollspeed);
-}
-*/

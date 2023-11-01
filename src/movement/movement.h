@@ -33,7 +33,7 @@ namespace movement
 	void FASTCALL Detour_CheckFalling(CCSPlayer_MovementServices *, CMoveData *);
 	void FASTCALL Detour_PlayerMovePost(CCSPlayer_MovementServices *, CMoveData *);
 	void FASTCALL Detour_PostThink(CCSPlayerPawnBase *);
-	//f32 FASTCALL Detour_CalcRoll(CCSPlayer_MovementServices*, CMoveData*, const QAngle&, const Vector&, float, float);
+
 }
 
 class MovementPlayer
@@ -78,7 +78,6 @@ public:
 	const i32 index;
 
 	bool processingMovement;
-	CCSPlayer_MovementServices *currentMoveServices{};
 	CMoveData *currentMoveData{};
 	CMoveData moveDataPre;
 	CMoveData moveDataPost;
@@ -87,8 +86,6 @@ public:
 	u64 lastProcessedTickcount{};
 
 	QAngle oldAngles;
-
-	QAngle inStrafeAngle;
 
 	bool processingDuck{};
 	bool duckBugged{};

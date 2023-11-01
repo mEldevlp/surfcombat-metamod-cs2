@@ -15,21 +15,20 @@
 #include "surf/surf.h"
 
 #include "tier0/memdbgon.h"
-
-SURFPlugin g_SURFPlugin;
+SurfPlugin g_SurfPlugin;
 
 SH_DECL_HOOK2_void(ISource2GameClients, ClientCommand, SH_NOATTRIB, false, CPlayerSlot, const CCommand&);
 SH_DECL_HOOK6_void(ISource2GameEntities, CheckTransmit, SH_NOATTRIB, false, CCheckTransmitInfo**, int, CBitVec<16384>&, const Entity2Networkable_t **, const uint16 *, int);
 SH_DECL_HOOK3_void(ISource2Server, GameFrame, SH_NOATTRIB, false, bool, bool, bool);
 SH_DECL_HOOK5(ISource2GameClients, ProcessUsercmds, SH_NOATTRIB, false, float, CPlayerSlot, bf_read *, int, bool, bool);
 SH_DECL_HOOK2_void(CEntitySystem, Spawn, SH_NOATTRIB, false, int, const EntitySpawnInfo_t *);
-SH_DECL_HOOK4_void(ISource2GameClients, ClientPutInServer, SH_NOATTRIB, 0, CPlayerSlot, char const *, int, uint64)
+SH_DECL_HOOK4_void(ISource2GameClients, ClientPutInServer, SH_NOATTRIB, false, CPlayerSlot, char const *, int, uint64);
 
 CEntitySystem *g_pEntitySystem = NULL;
 
-PLUGIN_EXPOSE(SURFPlugin, g_SURFPlugin);
+PLUGIN_EXPOSE(SurfPlugin, g_SurfPlugin);
 
-bool SURFPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
+bool SurfPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bool late)
 {
 	PLUGIN_SAVEVARS();
 	
@@ -51,14 +50,14 @@ bool SURFPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bo
 	return true;
 }
 
-bool SURFPlugin::Unload(char *error, size_t maxlen)
+bool SurfPlugin::Unload(char *error, size_t maxlen)
 {
 	SH_REMOVE_HOOK(ISource2GameClients, ClientCommand, g_pSource2GameClients, SH_STATIC(Hook_ClientCommand), false);
 	SH_REMOVE_HOOK(ISource2Server, GameFrame, interfaces::pServer, SH_STATIC(Hook_GameFrame), false);
 	SH_REMOVE_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Pre), false);
 	SH_REMOVE_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Post), true);
 	SH_REMOVE_HOOK(CEntitySystem, Spawn, g_pEntitySystem, SH_STATIC(Hook_CEntitySystem_Spawn_Post), true);
-	SH_ADD_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_STATIC(Hook_CheckTransmit), true);
+	SH_REMOVE_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_STATIC(Hook_CheckTransmit), true);
 	SH_REMOVE_HOOK(ISource2GameClients, ClientPutInServer, g_pSource2GameClients, SH_STATIC(Hook_ClientPutInServer), false);
 
 	
@@ -66,58 +65,58 @@ bool SURFPlugin::Unload(char *error, size_t maxlen)
 	return true;
 }
 
-void SURFPlugin::AllPluginsLoaded()
+void SurfPlugin::AllPluginsLoaded()
 {
 }
 
-bool SURFPlugin::Pause(char *error, size_t maxlen)
-{
-	return true;
-}
-
-bool SURFPlugin::Unpause(char *error, size_t maxlen)
+bool SurfPlugin::Pause(char *error, size_t maxlen)
 {
 	return true;
 }
 
-const char *SURFPlugin::GetLicense()
+bool SurfPlugin::Unpause(char *error, size_t maxlen)
 {
-	return "MIT License";
+	return true;
 }
 
-const char *SURFPlugin::GetVersion()
+const char *SurfPlugin::GetLicense()
 {
-	return "0.1-a";
+	return "MIT";
 }
 
-const char *SURFPlugin::GetDate()
+const char *SurfPlugin::GetVersion()
+{
+	return "0.2-a";
+}
+
+const char *SurfPlugin::GetDate()
 {
 	return __DATE__;
 }
 
-const char *SURFPlugin::GetLogTag()
+const char *SurfPlugin::GetLogTag()
 {
-	return "SURF";
+	return "Surf";
 }
 
-const char *SURFPlugin::GetAuthor()
+const char *SurfPlugin::GetAuthor()
 {
 	return "\\mEl\\ & zer0.k";
 }
 
-const char *SURFPlugin::GetDescription()
+const char *SurfPlugin::GetDescription()
 {
-	return "Surf Combat Mod";
+	return "Surf Combat CS2 Metamod";
 }
 
-const char *SURFPlugin::GetName()
+const char *SurfPlugin::GetName()
 {
-	return "CS2SURF";
+	return "SURF";
 }
 
-const char *SURFPlugin::GetURL()
+const char *SurfPlugin::GetURL()
 {
-	return "https://github.com/mEldevlp/surfcombat-metamod-cs2/";
+	return "https://github.com/mEldevlp/surfcombat-metamod-cs2";
 }
 
 internal float Hook_ProcessUsercmds_Pre(CPlayerSlot slot, bf_read *buf, int numcmds, bool ignore, bool paused)
@@ -139,7 +138,6 @@ internal void Hook_CEntitySystem_Spawn_Post(int nCount, const EntitySpawnInfo_t 
 	{
 		if (pInfo && pInfo[i].m_pEntity)
 		{
-
 			// do stuff with spawning entities!
 		}
 	}

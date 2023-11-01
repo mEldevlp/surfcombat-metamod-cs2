@@ -4,33 +4,27 @@
 #include "movement/movement.h"
 #include "utils/datatypes.h"
 
-#define SURF_COLLISION_GROUP_STANDARD LAST_SHARED_COLLISION_GROUP
-#define SURF_COLLISION_GROUP_NOTRIGGER COLLISION_GROUP_DEBRIS
+#define COLLISION_GROUP_STANDARD LAST_SHARED_COLLISION_GROUP
+#define COLLISION_GROUP_NOTRIGGER COLLISION_GROUP_DEBRIS
 
 extern CMovementPlayerManager *g_pPlayerManager;
+
+class SURFPlayer;
 
 class SURFPlayer : public MovementPlayer
 {
 public:
-
-	SURFPlayer(i32 i) : MovementPlayer(i)
-	{
-		inNoclip = false;
-		inNoAngle = false;
-		m_currentCpIndex = 0;
-		m_checkpoints = CUtlVector<Checkpoint>(1, 0);
-	}
-
+	SURFPlayer(i32 i) : MovementPlayer(i) {}
 	virtual void Reset() override;
 	virtual void OnStartProcessMovement() override;
 	virtual void OnStopProcessMovement() override;
+	virtual void OnAirAcceleratePre(Vector &wishdir, f32 &wishspeed, f32 &accel) override;
+	virtual void OnAirAcceleratePost(Vector wishdir, f32 wishspeed, f32 accel) override;
 	virtual void OnStartTouchGround() override;
-	
+	virtual void OnStopTouchGround() override;
+private:
 	bool inNoclip;
-	bool inNoAngle;
-
-	QAngle lastAngles;
-
+	TurnState previousTurnState;
 public:
 	void ToggleHide();
 	void DisableNoclip();
@@ -38,22 +32,20 @@ public:
 	void EnableGodMode();
 	void HandleMoveCollision();
 	void UpdatePlayerModelAlpha();
+	
+	i32 currentCpIndex{};
+	bool holdingStill{};
+	f32 teleportTime{};
+
 	void SetCheckpoint();
+	void DoTeleport(i32 index);
+	void TpHoldPlayerStill();
 	void TpToCheckpoint();
 	void TpToPrevCp();
 	void TpToNextCp();
-	void ToggleInStrafe();
-	
-	struct Checkpoint
-	{
-		Vector origin;
-		QAngle angles;
-		Vector velocity;
-	};
-	
-	i32 m_currentCpIndex;
-	bool hideOtherPlayers;
-	CUtlVector<Checkpoint> m_checkpoints;
+
+	// misc
+	bool hideOtherPlayers{};
 };
 
 class CSURFPlayerManager : public CMovementPlayerManager
@@ -68,23 +60,23 @@ public:
 		}
 	}
 public:
-	SURFPlayer *ToPlayer(CCSPlayer_MovementServices *ms);
-	SURFPlayer *ToPlayer(CCSPlayerController *controller);
-	SURFPlayer *ToPlayer(CBasePlayerPawn *pawn);
-	SURFPlayer *ToPlayer(CPlayerSlot slot);
-	SURFPlayer *ToPlayer(CEntityIndex entIndex);
-	SURFPlayer *ToPlayer(CPlayerUserId userID);
-	
-	SURFPlayer *ToSURFPlayer(MovementPlayer *player) { return static_cast<SURFPlayer *>(player); }
+	SURFPlayer* ToPlayer(CCSPlayer_MovementServices *ms);
+	SURFPlayer* ToPlayer(CCSPlayerController *controller);
+	SURFPlayer* ToPlayer(CBasePlayerPawn *pawn);
+	SURFPlayer* ToPlayer(CPlayerSlot slot);
+	SURFPlayer* ToPlayer(CEntityIndex entIndex);
+	SURFPlayer* ToPlayer(CPlayerUserId userID);
+
+	SURFPlayer* ToSURFPlayer(MovementPlayer *player) { return static_cast<SURFPlayer*>(player); }
 };
 
 namespace SURF
 {
-	CSURFPlayerManager *GetSURFPlayerManager();
+	CSURFPlayerManager* GetSURFPlayerManager();
 	namespace HUD
 	{
 		void OnProcessUsercmds_Post(CPlayerSlot &slot, bf_read *buf, int numcmds, bool ignore, bool paused);
-		void DrawSpeedPanel(SURFPlayer *player);
+		void DrawSpeedPanel(SURFPlayer*player);
 	}
 	namespace misc
 	{

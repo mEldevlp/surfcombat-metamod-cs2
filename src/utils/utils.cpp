@@ -21,6 +21,8 @@ ClientPrintFilter_t *UTIL_ClientPrintFilter = NULL;
 InitPlayerMovementTraceFilter_t *utils::InitPlayerMovementTraceFilter = NULL;
 TracePlayerBBoxForGround_t *utils::TracePlayerBBoxForGround = NULL;
 InitGameTrace_t *utils::InitGameTrace = NULL;
+GetLegacyGameEventListener_t *utils::GetLegacyGameEventListener = NULL;
+SnapViewAngles_t *utils::SnapViewAngles = NULL;
 
 void modules::Initialize()
 {
@@ -28,6 +30,7 @@ void modules::Initialize()
 	modules::tier0 = new CModule(ROOTBIN, "tier0");
 	modules::server = new CModule(GAMEBIN, "server");
 	modules::schemasystem = new CModule(ROOTBIN, "schemasystem");
+	modules::steamnetworkingsockets = new CModule(ROOTBIN, "steamnetworkingsockets");
 }
 
 bool interfaces::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
@@ -39,6 +42,8 @@ bool interfaces::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
 	GET_V_IFACE_CURRENT(GetEngineFactory, interfaces::pEngine, IVEngineServer2, INTERFACEVERSION_VENGINESERVER);
 	GET_V_IFACE_CURRENT(GetServerFactory, interfaces::pServer, ISource2Server, INTERFACEVERSION_SERVERGAMEDLL);
 	GET_V_IFACE_CURRENT(GetEngineFactory, interfaces::pSchemaSystem, CSchemaSystem, SCHEMASYSTEM_INTERFACE_VERSION);
+	interfaces::pGameEventManager = (IGameEventManager2 *)(CALL_VIRTUAL(uintptr_t, offsets::GetEventManager, interfaces::pServer) - 8);
+	
 	return true;
 }
 
@@ -61,6 +66,8 @@ bool utils::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
 	RESOLVE_SIG(modules::server, sigs::TracePlayerBBoxForGround, utils::TracePlayerBBoxForGround);
 	RESOLVE_SIG(modules::server, sigs::InitGameTrace, utils::InitGameTrace);
 	RESOLVE_SIG(modules::server, sigs::InitPlayerMovementTraceFilter, utils::InitPlayerMovementTraceFilter);
+	RESOLVE_SIG(modules::server, sigs::GetLegacyGameEventListener, utils::GetLegacyGameEventListener);
+	RESOLVE_SIG(modules::server, sigs::SnapViewAngles, utils::SnapViewAngles);
 
 	InitDetours();
 	return true;
@@ -166,6 +173,51 @@ CBasePlayerController *utils::GetController(CPlayerSlot slot)
 	return static_cast<CBasePlayerController*>(g_pEntitySystem->GetBaseEntity(CEntityIndex(slot.Get() + 1)));
 }
 
+bool utils::IsButtonDown(CInButtonState *buttons, u64 button, bool onlyDown)
+{
+	if (onlyDown)
+	{
+		return buttons->m_pButtonStates[0] & button;
+	}
+	else
+	{
+		bool multipleKeys = (button & (button - 1));
+		if (multipleKeys)
+		{
+			u64 currentButton = button;
+			u64 key = 0;
+			if (button)
+			{
+				while (true)
+				{
+					if (currentButton & 1)
+					{
+						u64 keyMask = 1ull << key;
+						EInButtonState keyState = (EInButtonState)(keyMask && buttons->m_pButtonStates[0] + (keyMask && buttons->m_pButtonStates[1]) * 2 + (keyMask && buttons->m_pButtonStates[2]) * 4);
+						if (keyState > IN_BUTTON_DOWN_UP)
+						{
+							return true;
+						}
+					}
+					key++;
+					currentButton >>= 1;
+					if (!currentButton) return !!(buttons->m_pButtonStates[0] & button);
+				}
+			}
+			return false;
+		}
+		else
+		{
+			EInButtonState keyState = (EInButtonState)(button & buttons->m_pButtonStates[0] + (button & buttons->m_pButtonStates[1]) * 2 + (button & buttons->m_pButtonStates[2]) * 4);
+			if (keyState > IN_BUTTON_DOWN_UP)
+			{
+				return true;
+			}
+			return !!(buttons->m_pButtonStates[0] & button);
+		}
+	}
+}
+
 CPlayerSlot utils::GetEntityPlayerSlot(CBaseEntity *entity)
 {
 	CBasePlayerController *controller = utils::GetController(entity);
@@ -211,6 +263,25 @@ void utils::PrintAlert(CBaseEntity *entity, const char *format, ...)
 	UTIL_ClientPrintFilter(filter, HUD_PRINTALERT, buffer, "", "", "", "");
 }
 
+void utils::PrintHTMLCentre(CBaseEntity *entity, const char *format, ...)
+{
+	CBasePlayerController *controller = utils::GetController(entity);
+	if (!controller) return;
+
+	FORMAT_STRING(buffer);
+
+	IGameEvent *event = interfaces::pGameEventManager->CreateEvent("show_survival_respawn_status");
+	if (!event) return;
+	event->SetString("loc_token", buffer);
+	event->SetInt("duration", 5);
+	event->SetInt("userid", -1);
+
+	CPlayerSlot slot = controller->entindex() - 1;
+	IGameEventListener2 *listener = utils::GetLegacyGameEventListener(slot);
+	listener->FireGameEvent(event);
+	interfaces::pGameEventManager->FreeEvent(event);
+}
+
 void utils::PrintConsoleAll(const char *format, ...)
 {
 	FORMAT_STRING(buffer);
@@ -237,4 +308,32 @@ void utils::PrintAlertAll(const char *format, ...)
 	FORMAT_STRING(buffer);
 	CBroadcastRecipientFilter filter;
 	UTIL_ClientPrintFilter(filter, HUD_PRINTALERT, buffer, "", "", "", "");
+}
+
+void utils::PrintHTMLCentreAll(const char *format, ...)
+{
+	FORMAT_STRING(buffer);
+
+	IGameEvent *event = interfaces::pGameEventManager->CreateEvent("show_survival_respawn_status");
+	if (!event) return;
+	event->SetString("loc_token", buffer);
+	event->SetInt("duration", 5);
+	event->SetInt("userid", -1);
+
+	interfaces::pGameEventManager->FireEvent(event);
+}
+
+f32 utils::NormalizeDeg(f32 a)
+{
+	a = fmod(a, 360.0);
+	if (a >= 180.0)
+		a -= 360.0;
+	else if (a < -180.0)
+		a += 360.0;
+	return a;
+}
+
+f32 utils::GetAngleDifference(const f32 x, const f32 y, const f32 c)
+{
+	return fmod(fabs(x - y) + c, 2 * c) - c;
 }

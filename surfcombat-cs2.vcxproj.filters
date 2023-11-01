@@ -1,64 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\surf\sc_commands.cpp">
-      <Filter>SURF</Filter>
-    </ClCompile>
     <ClCompile Include="src\sc_main.cpp">
       <Filter>SURF</Filter>
     </ClCompile>
-    <ClCompile Include="src\surf\sc_manager.cpp">
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\hl2sdk-cs2\tier1\generichash.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\hl2sdk-cs2\entity2\entitysystem.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\utils\detours.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\hl2sdk-cs2\tier1\convar.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\kz\sc_hud.cpp">
       <Filter>SURF</Filter>
     </ClCompile>
-    <ClCompile Include="src\surf\sc_player.cpp">
+    <ClCompile Include="src\kz\sc_manager.cpp">
       <Filter>SURF</Filter>
     </ClCompile>
-    <ClCompile Include="src\surf\hud.cpp">
+    <ClCompile Include="src\kz\sc_commands.cpp">
       <Filter>SURF</Filter>
     </ClCompile>
-    <ClCompile Include="src\movement\mv_hooks.cpp">
-      <Filter>MOVEMENT</Filter>
+    <ClCompile Include="src\kz\sc_player.cpp">
+      <Filter>SURF</Filter>
     </ClCompile>
-    <ClCompile Include="src\movement\mv_manager.cpp">
-      <Filter>MOVEMENT</Filter>
-    </ClCompile>
-    <ClCompile Include="src\movement\mv_player.cpp">
-      <Filter>MOVEMENT</Filter>
-    </ClCompile>
-    <ClCompile Include="hl2sdk-cs2\tier1\convar.cpp">
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\hl2sdk-cs2\public\tier0\memoverride.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\detours.cpp">
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\movement\mv_hooks.cpp">
+      <Filter>SURF\MOVEMENT</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\movement\mv_manager.cpp">
+      <Filter>SURF\MOVEMENT</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\movement\mv_player.cpp">
+      <Filter>SURF\MOVEMENT</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src/utils/plat_win.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
-    <ClCompile Include="hl2sdk-cs2\entity2\entitysystem.cpp">
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\utils\schema.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
-    <ClCompile Include="hl2sdk-cs2\public\tier0\memoverride.cpp">
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\utils\simplecmds.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\plat_win.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utils\schema.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utils\simplecmds.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utils\utils.cpp">
+    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\utils\utils.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SURF">
-      <UniqueIdentifier>{409e1086-0765-4b1b-a380-a09f37b118c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MOVEMENT">
-      <UniqueIdentifier>{11de128f-6f8f-4140-b04f-e952d0290aca}</UniqueIdentifier>
+      <UniqueIdentifier>{a484dbdf-14db-4a95-bc4c-ad23d47d882a}</UniqueIdentifier>
     </Filter>
     <Filter Include="UTILS">
-      <UniqueIdentifier>{9aec78ce-0aa9-4f03-86f0-a84764d34824}</UniqueIdentifier>
+      <UniqueIdentifier>{bb286e32-2df3-4ef3-9c83-83de4ffccd85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SURF\MOVEMENT">
+      <UniqueIdentifier>{55af214b-4442-4cfd-a499-09b30855b1c7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\sc_main.h">
+      <Filter>SURF</Filter>
+    </ClInclude>
+    <ClInclude Include="src\kz\surf.h">
+      <Filter>SURF</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movement\movement.h">
+      <Filter>SURF\MOVEMENT</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

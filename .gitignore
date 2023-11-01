@@ -1,3 +1,4 @@
-compiled/
+build/
+Compiled/
 .vs/
 .vscode/

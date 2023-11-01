@@ -81,7 +81,7 @@ class MMSPluginConfig(object):
     if builder.options.plugin_name is not None:
       self.plugin_name = builder.options.plugin_name
     else:
-      self.plugin_name = 'cs2surf'
+      self.plugin_name = 'surfcombatcs2'
 
     if builder.options.plugin_alias is not None:
       self.plugin_alias = builder.options.plugin_alias
@@ -362,9 +362,6 @@ class MMSPluginConfig(object):
       
     if compiler.target.arch == 'x86_64':
       compiler.defines += ['X64BITS', 'PLATFORM_64BITS']
-
-    if compiler.target.platform in ['linux', 'mac']:
-      compiler.defines += ['NO_HOOK_MALLOC', 'NO_MALLOC_OVERRIDE']
 
     compiler.defines += ['META_IS_SOURCE2']
 
