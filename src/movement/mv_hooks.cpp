@@ -5,6 +5,7 @@
 
 void movement::InitDetours()
 {
+	/*
 	INIT_DETOUR(GetMaxSpeed);
 	INIT_DETOUR(ProcessMovement);
 	INIT_DETOUR(PlayerMoveNew);
@@ -26,7 +27,7 @@ void movement::InitDetours()
 	INIT_DETOUR(FinishGravity);
 	INIT_DETOUR(CheckFalling);
 	INIT_DETOUR(PlayerMovePost);
-	INIT_DETOUR(PostThink);
+	INIT_DETOUR(PostThink);*/
 }
 
 f32 FASTCALL movement::Detour_GetMaxSpeed(CCSPlayerPawn *pawn)

@@ -5,7 +5,7 @@
 
 #define SCMD_CALLBACK(name) META_RES name(CCSPlayerController *controller, const CCommand *args)
 
-#define SCMD_CONSOLE_PREFIX "kz_"
+#define SCMD_CONSOLE_PREFIX "sc_"
 #define SCMD_CHAT_SILENT_TRIGGER '/'
 #define SCMD_CHAT_TRIGGER '!'
 #define SCMD_MAX_CMDS 512

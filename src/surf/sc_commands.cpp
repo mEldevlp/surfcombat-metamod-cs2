@@ -26,11 +26,42 @@ internal SCMD_CALLBACK(Command_SCHide)
 	return MRES_SUPERCEDE;
 }
 
+internal SCMD_CALLBACK(Command_SCTest)
+{
+	SURFPlayer* player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
+
+	CCSPlayerPawn* pPawn = player->GetPawn();
+	if (!pPawn) return MRES_SUPERCEDE;
+
+	Color colorteam;
+	int alpha = pPawn->m_clrRender().a();
+
+	switch (pPawn->m_iTeamNum)
+	{
+		case CS_TEAM_CT:
+		{
+			colorteam.SetColor(0, 0, 255, alpha);
+			break;
+		}
+
+		case CS_TEAM_T:
+		{
+			colorteam.SetColor(255, 0, 0, alpha);
+			break;
+		}
+	}
+
+	player->GetPawn()->m_clrRender(colorteam);
+
+	return MRES_SUPERCEDE;
+}
+
 void SURF::misc::RegisterCommands()
 {
-	scmd::RegisterCmd("sc_noclip",     Command_SCNoclip); // For debug. Not inlcuded in release
-	scmd::RegisterCmd("sc_hidelegs",   Command_SCHidelegs);
-	scmd::RegisterCmd("sc_hide",	   Command_SCHide);
+	scmd::RegisterCmd("noclip",     Command_SCNoclip); // For debug. Not inlcuded in release
+	scmd::RegisterCmd("hidelegs",   Command_SCHidelegs);
+	scmd::RegisterCmd("hide",	    Command_SCHide);
+	scmd::RegisterCmd("redblue",	Command_SCTest); // for test features
 }
 
 void SURF::misc::OnCheckTransmit(CCheckTransmitInfo **pInfo, int infoCount)

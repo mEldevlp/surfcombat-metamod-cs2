@@ -103,19 +103,19 @@ void SURFPlayer::TpHoldPlayerStill()
 
 void SURFPlayer::OnStartProcessMovement()
 {
-	MovementPlayer::OnStartProcessMovement();
+	//MovementPlayer::OnStartProcessMovement();
 	// Always ensure that the player has at least an ongoing jump.
 	// This is mostly to prevent crash, it's not a valid jump.
 
-	this->EnableGodMode();
-	this->HandleMoveCollision();
+	//this->EnableGodMode();
+	//this->HandleMoveCollision();
 }
 
 void SURFPlayer::OnStopProcessMovement()
 {
 	SURF::HUD::DrawSpeedPanel(this);
 
-	MovementPlayer::OnStopProcessMovement();
+	//MovementPlayer::OnStopProcessMovement();
 }
 
 void SURFPlayer::ToggleHide()

@@ -4,52 +4,55 @@
     <ClCompile Include="src\sc_main.cpp">
       <Filter>SURF</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\hl2sdk-cs2\tier1\generichash.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\hl2sdk-cs2\entity2\entitysystem.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\utils\detours.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\hl2sdk-cs2\tier1\convar.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
-    <ClCompile Include="src\kz\sc_hud.cpp">
-      <Filter>SURF</Filter>
-    </ClCompile>
-    <ClCompile Include="src\kz\sc_manager.cpp">
-      <Filter>SURF</Filter>
-    </ClCompile>
-    <ClCompile Include="src\kz\sc_commands.cpp">
-      <Filter>SURF</Filter>
-    </ClCompile>
-    <ClCompile Include="src\kz\sc_player.cpp">
-      <Filter>SURF</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\hl2sdk-cs2\public\tier0\memoverride.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\movement\mv_hooks.cpp">
+    <ClCompile Include="src\movement\mv_hooks.cpp">
       <Filter>SURF\MOVEMENT</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\movement\mv_manager.cpp">
+    <ClCompile Include="src\movement\mv_manager.cpp">
       <Filter>SURF\MOVEMENT</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\movement\mv_player.cpp">
+    <ClCompile Include="src\movement\mv_player.cpp">
       <Filter>SURF\MOVEMENT</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src/utils/plat_win.cpp">
+    <ClCompile Include="src\surf\sc_hud.cpp">
+      <Filter>SURF</Filter>
+    </ClCompile>
+    <ClCompile Include="src\surf\sc_commands.cpp">
+      <Filter>SURF</Filter>
+    </ClCompile>
+    <ClCompile Include="src\surf\sc_manager.cpp">
+      <Filter>SURF</Filter>
+    </ClCompile>
+    <ClCompile Include="src\surf\sc_player.cpp">
+      <Filter>SURF</Filter>
+    </ClCompile>
+    <ClCompile Include="hl2sdk-cs2\tier1\convar.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\utils\schema.cpp">
+    <ClCompile Include="src\utils\detours.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\utils\simplecmds.cpp">
+    <ClCompile Include="hl2sdk-cs2\entity2\entitysystem.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
-    <ClCompile Include="C:\cs2_dev\cs2kz_metamod\src\utils\utils.cpp">
+    <ClCompile Include="hl2sdk-cs2\tier1\generichash.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="hl2sdk-cs2\public\tier0\memoverride.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\plat_win.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\schema.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\simplecmds.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\utils.cpp">
+      <Filter>UTILS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\events.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,11 +71,14 @@
     <ClInclude Include="src\sc_main.h">
       <Filter>SURF</Filter>
     </ClInclude>
-    <ClInclude Include="src\kz\surf.h">
-      <Filter>SURF</Filter>
-    </ClInclude>
     <ClInclude Include="src\movement\movement.h">
       <Filter>SURF\MOVEMENT</Filter>
+    </ClInclude>
+    <ClInclude Include="src\surf\surf.h">
+      <Filter>SURF</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\eventlistener.h">
+      <Filter>UTILS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
