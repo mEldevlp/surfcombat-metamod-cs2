@@ -29,7 +29,7 @@ void movement::InitDetours()
 	INIT_DETOUR(PlayerMovePost);
 	INIT_DETOUR(PostThink);*/
 }
-
+/*
 f32 FASTCALL movement::Detour_GetMaxSpeed(CCSPlayerPawn *pawn)
 {
 	return GetMaxSpeed(pawn);
@@ -91,7 +91,7 @@ void FASTCALL movement::Detour_Duck(CCSPlayer_MovementServices *ms, CMoveData *m
 
 bool FASTCALL movement::Detour_LadderMove(CCSPlayer_MovementServices *ms, CMoveData *mv)
 {
-	/*
+	
 	Vector oldVelocity = mv->m_vecVelocity;
 	bool result = LadderMove(ms, mv);
 	MovementPlayer *player = g_pPlayerManager->ToPlayer(ms);
@@ -121,7 +121,7 @@ bool FASTCALL movement::Detour_LadderMove(CCSPlayer_MovementServices *ms, CMoveD
 			player->takeoffFromLadder = true;
 			player->OnChangeMoveType(MOVETYPE_LADDER);
 		}
-	}*/
+	}
 	return true;
 }
 
@@ -132,7 +132,7 @@ void FASTCALL movement::Detour_CheckJumpButton(CCSPlayer_MovementServices *ms, C
 
 void FASTCALL movement::Detour_OnJump(CCSPlayer_MovementServices *ms, CMoveData *mv)
 {
-	/*
+	
 	MovementPlayer *player = g_pPlayerManager->ToPlayer(ms);
 	f32 oldJumpUntil = ms->m_flJumpUntil();
 	MoveType_t oldMoveType = player->GetPawn()->m_MoveType();
@@ -142,7 +142,7 @@ void FASTCALL movement::Detour_OnJump(CCSPlayer_MovementServices *ms, CMoveData 
 		player->hitPerf = (oldMoveType != MOVETYPE_LADDER && !player->oldWalkMoved);
 		player->RegisterTakeoff(true);
 		player->OnStopTouchGround();
-	}*/
+	}
 }
 
 void FASTCALL movement::Detour_AirAccelerate(CCSPlayer_MovementServices *ms, CMoveData *mv, Vector &wishdir, f32 wishspeed, f32 accel)
@@ -172,7 +172,7 @@ void FASTCALL movement::Detour_TryPlayerMove(CCSPlayer_MovementServices *ms, CMo
 
 void FASTCALL movement::Detour_CategorizePosition(CCSPlayer_MovementServices *ms, CMoveData *mv, bool bStayOnGround)
 {
-	/*
+	
 	MovementPlayer *player = g_pPlayerManager->ToPlayer(ms);
 	Vector oldVelocity = mv->m_vecVelocity;
 	bool oldOnGround = !!(player->GetPawn()->m_fFlags() & FL_ONGROUND);
@@ -194,7 +194,7 @@ void FASTCALL movement::Detour_CategorizePosition(CCSPlayer_MovementServices *ms
 			player->RegisterTakeoff(false);
 			player->OnStopTouchGround();
 		}
-	}*/
+	}
 }
 
 void FASTCALL movement::Detour_FinishGravity(CCSPlayer_MovementServices *ms, CMoveData *mv)
@@ -216,3 +216,4 @@ void FASTCALL movement::Detour_PostThink(CCSPlayerPawnBase *pawn)
 {
 	PostThink(pawn);
 }
+*/

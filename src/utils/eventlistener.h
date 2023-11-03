@@ -4,6 +4,7 @@
 #include "utlstring.h"
 #include "utlvector.h"
 #include "igameevents.h"
+#include "utils.h"
 
 typedef void (*FnEventListenerCallback)(IGameEvent* event);
 
