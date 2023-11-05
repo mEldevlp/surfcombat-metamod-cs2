@@ -5,3 +5,7 @@
 	path = hl2sdk-cs2
 	url = https://github.com/zer0k-z/hl2sdk.git
 	branch = cs2
+[submodule "vendor/protobuf-21.x"]
+	path = vendor/protobuf-21.x
+	url = https://github.com/protocolbuffers/protobuf.git
+	branch = 21.x
