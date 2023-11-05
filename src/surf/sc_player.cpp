@@ -25,7 +25,6 @@ void SURFPlayer::OnStartTouchGround()
 
 void SURFPlayer::OnStopTouchGround()
 {
-
 }
 
 void SURFPlayer::OnAirAcceleratePre(Vector &wishdir, f32 &wishspeed, f32 &accel)
@@ -75,6 +74,7 @@ void SURFPlayer::UpdatePlayerModelAlpha()
 {
 	CCSPlayerPawn *pawn = this->GetPawn();
 	if (!pawn) return;
+
 	Color ogColor = pawn->m_clrRender();
 	if (pawn->m_clrRender().a() != 254)
 	{
@@ -103,7 +103,7 @@ void SURFPlayer::TpHoldPlayerStill()
 
 void SURFPlayer::OnStartProcessMovement()
 {
-	//MovementPlayer::OnStartProcessMovement();
+	MovementPlayer::OnStartProcessMovement();
 	// Always ensure that the player has at least an ongoing jump.
 	// This is mostly to prevent crash, it's not a valid jump.
 
@@ -115,7 +115,7 @@ void SURFPlayer::OnStopProcessMovement()
 {
 	SURF::HUD::DrawSpeedPanel(this);
 
-	//MovementPlayer::OnStopProcessMovement();
+	MovementPlayer::OnStopProcessMovement();
 }
 
 void SURFPlayer::ToggleHide()

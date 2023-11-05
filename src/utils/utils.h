@@ -20,6 +20,7 @@ extern ClientPrintFilter_t *UTIL_ClientPrintFilter;
 namespace utils
 {
 	bool Initialize(ISmmAPI *ismm, char *error, size_t maxlen);
+
 	void Cleanup();
 
 	CGlobalVars *GetServerGlobals();
@@ -43,6 +44,9 @@ namespace utils
 
 	bool IsButtonDown(CInButtonState *buttons, u64 button, bool onlyDown = false);
 	CPlayerSlot GetEntityPlayerSlot(CBaseEntity *entity);
+
+	void ClientPrintAll(int hud_dest, const char* format, ...);
+	void ClientPrint(CBasePlayerController* player, int hud_dest, const char* format, ...);
 	
 	// Print functions do not work inside movement hooks, for some reasons...
 	void PrintConsole(CBaseEntity *entity, const char *format, ...);

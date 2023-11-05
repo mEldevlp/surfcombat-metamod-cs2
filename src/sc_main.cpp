@@ -13,9 +13,11 @@
 
 #include "movement/movement.h"
 #include "surf/surf.h"
+#include "utils/eventlistener.h"
 
 #include "tier0/memdbgon.h"
 SurfPlugin g_SurfPlugin;
+
 
 SH_DECL_HOOK2_void(ISource2GameClients, ClientCommand, SH_NOATTRIB, false, CPlayerSlot, const CCommand&);
 SH_DECL_HOOK6_void(ISource2GameEntities, CheckTransmit, SH_NOATTRIB, false, CCheckTransmitInfo**, int, CBitVec<16384>&, const Entity2Networkable_t **, const uint16 *, int);
@@ -24,6 +26,7 @@ SH_DECL_HOOK5(ISource2GameClients, ProcessUsercmds, SH_NOATTRIB, false, float, C
 SH_DECL_HOOK2_void(CEntitySystem, Spawn, SH_NOATTRIB, false, int, const EntitySpawnInfo_t *);
 SH_DECL_HOOK4_void(ISource2GameClients, ClientPutInServer, SH_NOATTRIB, false, CPlayerSlot, char const *, int, uint64);
 
+IGameEventManager2* g_gameEventManager = nullptr;
 CEntitySystem *g_pEntitySystem = NULL;
 
 PLUGIN_EXPOSE(SurfPlugin, g_SurfPlugin);
@@ -36,6 +39,7 @@ bool SurfPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bo
 	{
 		return false;
 	}
+
 	movement::InitDetours();
 	
 	SH_ADD_HOOK(ISource2GameClients, ClientCommand, g_pSource2GameClients, SH_STATIC(Hook_ClientCommand), false);
@@ -45,6 +49,15 @@ bool SurfPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bo
 	SH_ADD_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_STATIC(Hook_CheckTransmit), true);
 	SH_ADD_HOOK(ISource2GameClients, ClientPutInServer, g_pSource2GameClients, SH_STATIC(Hook_ClientPutInServer), false);
 	
+	g_gameEventManager = (IGameEventManager2*)(CALL_VIRTUAL(uintptr_t, offsets::GetEventManager, interfaces::pServer) - 8);
+
+	if (!g_gameEventManager)
+	{
+		ConMsg("Failed to find GameEventManager\n");
+	}
+
+	RegisterEventListeners();
+
 	SURF::misc::RegisterCommands();
 
 	return true;
@@ -132,8 +145,9 @@ internal float Hook_ProcessUsercmds_Post(CPlayerSlot slot, bf_read *buf, int num
 
 internal void Hook_CEntitySystem_Spawn_Post(int nCount, const EntitySpawnInfo_t *pInfo_DontUse)
 {
+	/*
 	EntitySpawnInfo_t *pInfo = (EntitySpawnInfo_t *)pInfo_DontUse;
-
+	
 	for (i32 i = 0; i < nCount; i++)
 	{
 		if (pInfo && pInfo[i].m_pEntity)
@@ -141,6 +155,9 @@ internal void Hook_CEntitySystem_Spawn_Post(int nCount, const EntitySpawnInfo_t 
 
 		}
 	}
+	*/
+
+	RETURN_META(MRES_IGNORED);
 }
 
 internal void Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)

@@ -2,6 +2,7 @@
 #include "utils/utils.h"
 #include "surf.h"
 #include "utils/simplecmds.h"
+#include "utils/eventlistener.h"
 
 #include "tier0/memdbgon.h"
 
@@ -56,12 +57,28 @@ internal SCMD_CALLBACK(Command_SCTest)
 	return MRES_SUPERCEDE;
 }
 
+internal SCMD_CALLBACK(Command_SCTest2)
+{
+	if (g_vecEventListeners.Count() == 0)
+	{
+		utils::ClientPrintAll(MsgDest::HUD_PRINTTALK, " \5[REGISTRED EVENTS] \7no registred events");
+	}
+
+	for (int i = 0; i < (g_vecEventListeners).Count(); i++)
+	{
+		utils::ClientPrintAll(MsgDest::HUD_PRINTTALK, " \5[REGISTRED EVENTS] \7%s", g_vecEventListeners[i]->GetEventName());
+	}
+
+	return MRES_SUPERCEDE;
+}
+
 void SURF::misc::RegisterCommands()
 {
 	scmd::RegisterCmd("noclip",     Command_SCNoclip); // For debug. Not inlcuded in release
 	scmd::RegisterCmd("hidelegs",   Command_SCHidelegs);
 	scmd::RegisterCmd("hide",	    Command_SCHide);
 	scmd::RegisterCmd("redblue",	Command_SCTest); // for test features
+	scmd::RegisterCmd("events",		Command_SCTest2); // for test features
 }
 
 void SURF::misc::OnCheckTransmit(CCheckTransmitInfo **pInfo, int infoCount)

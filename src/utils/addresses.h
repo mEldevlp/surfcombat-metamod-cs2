@@ -27,6 +27,12 @@ namespace modules
 	void Initialize();
 }
 
+namespace addresses
+{
+	inline void(FASTCALL* UTIL_ClientPrintAll)(int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4);
+	inline void(FASTCALL* ClientPrint)(CBasePlayerController* player, int msg_dest, const char* msg_name, const char* param1, const char* param2, const char* param3, const char* param4);
+}
+
 namespace offsets
 {
 #ifdef _WIN32
@@ -72,12 +78,14 @@ namespace sigs
 
 	DECLARE_SIG(StateChanged, "\x48\x89\x54\x24\x10\x55\x53\x57\x41\x55");
 
-	// TODO
+	// TODO linux no forgot!
+	DECLARE_SIG(UTIL_ClientPrintAll, "\x48\x89\x5C\x24\x08\x48\x89\x6C\x24\x10\x48\x89\x74\x24\x18\x57\x48\x81\xEC\x70\x01\x2A\x2A\x8B\xE9")
+	DECLARE_SIG(ClientPrint, "\x48\x85\xC9\x0F\x84\x2A\x2A\x2A\x2A\x48\x8B\xC4\x48\x89\x58\x18")
+
 	DECLARE_SIG(UTIL_ClientPrintFilter, "\x48\x89\x5C\x24\x08\x48\x89\x6C\x24\x18\x56\x57\x41\x56\x48\x81\xEC\x90\x00\x00\x00\x49\x8B\xF0");
 	
 	// search for the string "\"Console<0>\" say_team \"%s\"\n"
 	DECLARE_SIG(Host_Say, "\x44\x89\x4C\x24\x20\x44\x88");
-
 
 	// "Cannot create an entity because entity class is NULL %d\n"
 	DECLARE_SIG(CreateEntity, "\x48\x89\x5C\x24\x08\x48\x89\x6C\x24\x10\x56\x57\x41\x56\x48\x83\xEC\x40\x4D");
@@ -111,6 +119,8 @@ namespace sigs
 	// search for "CCSBot::BendLineOfSight". should find 1 function, CGameTrace::Init is called in there right after this string is referenced with an 80 byte parameter.
 	DECLARE_SIG(InitGameTrace, "\x48\x89\x5C\x24\x08\x57\x48\x83\xEC\x20\x48\x8B\xD9\x33\xFF\x48\x8B\x0D\x2A\x2A\x2A\x2A\x48\x85\xC9");
 
+	// "pa start %f"
+	DECLARE_SIG(ProcessMovement, "\x40\x56\x57\x48\x81\xEC\xA8\x00\x00\x00\x4C\x8B\x49\x30");
 
 	/* Movement related functions */
 	
@@ -129,8 +139,7 @@ namespace sigs
 	/*
 	DECLARE_SIG(GetMaxSpeed, "\x48\x89\x5C\x24\x18\x57\x48\x83\xEC\x30\x80\xB9\xC2\x02\x00\x00\x00");
 
-	// "pa start %f"
-	DECLARE_SIG(ProcessMovement, "\x40\x56\x57\x48\x81\xEC\xA8\x00\x00\x00\x4C\x8B\x49\x30");
+
 	
 	// called in ProcessMovement in between the strings "pa start %f" and "pa end %f", contains the string "Can't move"
 	DECLARE_SIG(PlayerMoveNew, "\x48\x89\x5C\x24\x10\x48\x89\x74\x24\x18\x57\x48\x83\xEC\x2A\x48\x8B\xF9\x48\x8B\xDA");

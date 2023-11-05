@@ -1,5 +1,6 @@
 
 #include "utils.h"
+#include "eventlistener.h"
 #include "convar.h"
 #include "strtools.h"
 #include "tier0/dbg.h"
@@ -31,6 +32,7 @@ void modules::Initialize()
 	modules::server = new CModule(GAMEBIN, "server");
 	modules::schemasystem = new CModule(ROOTBIN, "schemasystem");
 	modules::steamnetworkingsockets = new CModule(ROOTBIN, "steamnetworkingsockets");
+
 }
 
 bool interfaces::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
@@ -42,8 +44,7 @@ bool interfaces::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
 	GET_V_IFACE_CURRENT(GetEngineFactory, interfaces::pEngine, IVEngineServer2, INTERFACEVERSION_VENGINESERVER);
 	GET_V_IFACE_CURRENT(GetServerFactory, interfaces::pServer, ISource2Server, INTERFACEVERSION_SERVERGAMEDLL);
 	GET_V_IFACE_CURRENT(GetEngineFactory, interfaces::pSchemaSystem, CSchemaSystem, SCHEMASYSTEM_INTERFACE_VERSION);
-	interfaces::pGameEventManager = (IGameEventManager2 *)(CALL_VIRTUAL(uintptr_t, offsets::GetEventManager, interfaces::pServer) - 8);
-	
+
 	return true;
 }
 
@@ -59,6 +60,9 @@ bool utils::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
 	utils::UnlockConCommands();
 	
 	RESOLVE_SIG(modules::server, sigs::UTIL_ClientPrintFilter, UTIL_ClientPrintFilter);
+
+	RESOLVE_SIG(modules::server, sigs::UTIL_ClientPrintAll, addresses::UTIL_ClientPrintAll);
+	RESOLVE_SIG(modules::server, sigs::ClientPrint, addresses::ClientPrint);
 
 	RESOLVE_SIG(modules::server, sigs::NetworkStateChanged, schema::NetworkStateChanged);
 	RESOLVE_SIG(modules::server, sigs::StateChanged, schema::StateChanged);
@@ -76,6 +80,7 @@ bool utils::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
 void utils::Cleanup()
 {
 	FlushAllDetours();
+	UnregisterEventListeners();
 }
 
 CGlobalVars *utils::GetServerGlobals()
@@ -235,6 +240,23 @@ CPlayerSlot utils::GetEntityPlayerSlot(CBaseEntity *entity)
 	vsnprintf(buffer, sizeof(buffer), format, args); \
 	va_end(args);
 
+void utils::ClientPrintAll(int hud_dest, const char* format, ...)
+{
+	FORMAT_STRING(buffer);
+	addresses::UTIL_ClientPrintAll(hud_dest, buffer, nullptr, nullptr, nullptr, nullptr);
+	ConMsg("%s\n", buffer);
+}
+
+void utils::ClientPrint(CBasePlayerController* player, int hud_dest, const char* format, ...)
+{
+	FORMAT_STRING(buffer);
+
+	if (player)
+		addresses::ClientPrint(player, hud_dest, buffer, nullptr, nullptr, nullptr, nullptr);
+	else
+		ConMsg("%s\n", buffer);
+}
+
 void utils::PrintConsole(CBaseEntity *entity, const char *format, ...)
 {
 	FORMAT_STRING(buffer);
@@ -270,7 +292,7 @@ void utils::PrintHTMLCentre(CBaseEntity *entity, const char *format, ...)
 
 	FORMAT_STRING(buffer);
 
-	IGameEvent *event = interfaces::pGameEventManager->CreateEvent("show_survival_respawn_status");
+	IGameEvent *event = g_gameEventManager->CreateEvent("show_survival_respawn_status");
 	if (!event) return;
 	event->SetString("loc_token", buffer);
 	event->SetInt("duration", 5);
@@ -279,7 +301,7 @@ void utils::PrintHTMLCentre(CBaseEntity *entity, const char *format, ...)
 	CPlayerSlot slot = controller->entindex() - 1;
 	IGameEventListener2 *listener = utils::GetLegacyGameEventListener(slot);
 	listener->FireGameEvent(event);
-	interfaces::pGameEventManager->FreeEvent(event);
+	g_gameEventManager->FreeEvent(event);
 }
 
 void utils::PrintConsoleAll(const char *format, ...)
@@ -314,13 +336,13 @@ void utils::PrintHTMLCentreAll(const char *format, ...)
 {
 	FORMAT_STRING(buffer);
 
-	IGameEvent *event = interfaces::pGameEventManager->CreateEvent("show_survival_respawn_status");
+	IGameEvent *event = g_gameEventManager->CreateEvent("show_survival_respawn_status");
 	if (!event) return;
 	event->SetString("loc_token", buffer);
 	event->SetInt("duration", 5);
 	event->SetInt("userid", -1);
 
-	interfaces::pGameEventManager->FireEvent(event);
+	g_gameEventManager->FireEvent(event);
 }
 
 f32 utils::NormalizeDeg(f32 a)

@@ -5,9 +5,9 @@
 
 void movement::InitDetours()
 {
+	INIT_DETOUR(ProcessMovement);
 	/*
 	INIT_DETOUR(GetMaxSpeed);
-	INIT_DETOUR(ProcessMovement);
 	INIT_DETOUR(PlayerMoveNew);
 	INIT_DETOUR(CheckParameters);
 	INIT_DETOUR(CanMove);
@@ -29,23 +29,24 @@ void movement::InitDetours()
 	INIT_DETOUR(PlayerMovePost);
 	INIT_DETOUR(PostThink);*/
 }
-/*
-f32 FASTCALL movement::Detour_GetMaxSpeed(CCSPlayerPawn *pawn)
+
+/*f32 FASTCALL movement::Detour_GetMaxSpeed(CCSPlayerPawn *pawn)
 {
 	return GetMaxSpeed(pawn);
 }
+*/
 
 void FASTCALL movement::Detour_ProcessMovement(CCSPlayer_MovementServices *ms, CMoveData *mv)
 {
 	MovementPlayer *player = g_pPlayerManager->ToPlayer(ms);
-	player->currentMoveData = mv;
-	player->moveDataPre = CMoveData(*mv);
+	//player->currentMoveData = mv;
+	//player->moveDataPre = CMoveData(*mv);
 	player->OnStartProcessMovement();
 	ProcessMovement(ms, mv);
-	player->moveDataPost = CMoveData(*mv);
+	//player->moveDataPost = CMoveData(*mv);
 	player->OnStopProcessMovement();
 }
-
+/*
 bool FASTCALL movement::Detour_PlayerMoveNew(CCSPlayer_MovementServices *ms, CMoveData *mv)
 {
 	return PlayerMoveNew(ms, mv);

@@ -61,6 +61,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\utils\ctimer.cpp" />
     <ClCompile Include="src\utils\events.cpp" />
     <ClCompile Include="src\utils\plat_win.cpp" />
     <ClCompile Include="src\sc_main.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="src\surf\surf.h" />
     <ClInclude Include="src\movement\movement.h" />
     <ClInclude Include="src\sc_main.h" />
+    <ClInclude Include="src\utils\ctimer.h" />
     <ClInclude Include="src\utils\eventlistener.h" />
   </ItemGroup>
   <ItemGroup>

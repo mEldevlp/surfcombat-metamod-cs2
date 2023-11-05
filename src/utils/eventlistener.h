@@ -3,8 +3,10 @@
 #include "common.h"
 #include "utlstring.h"
 #include "utlvector.h"
-#include "igameevents.h"
+#include <igameevents.h>
 #include "utils.h"
+
+#define CEL_PROCEED_EVENT_HANDLING 0x2A
 
 typedef void (*FnEventListenerCallback)(IGameEvent* event);
 
@@ -23,11 +25,28 @@ public:
 	~CGameEventListener() override
 	{
 	}
+	/*
+	void HandleGameEvent(IGameEvent* pEvent)
+	{
+		if (pEvent)
+		{
+			utils::ClientPrintAll(MsgDest::HUD_PRINTTALK, " \5[EVENT] id- \7%d", pEvent->GetID());
+			m_Callback(pEvent);
+		}
+	}
+
+	int IndicateEventHandling(void)
+	{
+		//Indicate whether 'HandleGameEvent()' shall get called or not
+
+		return CEL_PROCEED_EVENT_HANDLING;
+	}*/
 
 	// FireEvent is called by EventManager if event just occured
 	// KeyValue memory will be freed by manager if not needed anymore
 	void FireGameEvent(IGameEvent* event) override
 	{
+		utils::ClientPrintAll(MsgDest::HUD_PRINTTALK, " \5[EVENT] id- \7%d", event->GetID());
 		m_Callback(event);
 	}
 
@@ -37,8 +56,6 @@ private:
 	FnEventListenerCallback m_Callback;
 	const char* m_pszEventName;
 };
-
-extern IGameEventManager2* g_gameEventManager;
 
 void RegisterEventListeners();
 void UnregisterEventListeners();
