@@ -1,4 +1,4 @@
-#include "SURF.h"
+#include "surf.h"
 #include "utils/utils.h"
 #include "igameevents.h"
 #include "tier0/memdbgon.h"
