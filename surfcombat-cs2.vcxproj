@@ -33,10 +33,13 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Default|x64'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Default|x64'">surfcombatcs2</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Default|x64'">
+    <LibraryPath>hl2sdk-cs2\lib\public\win64;vendor/funchook/lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Default|x64'">
     <ClCompile>
       <AdditionalOptions>/DSE_CS2=25 /DSOURCE_ENGINE=25 /Zi /TP /std:c++17</AdditionalOptions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);metamod-source\core;metamod-source\core\sourcehook;($SolutionDir);hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server;vendor\subhook;vendor\funchook\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);metamod-source\core;metamod-source\core\sourcehook;($SolutionDir);hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server;vendor\subhook;vendor\funchook\include;vendor/protobuf-21.x/src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WINDOWS;COMPILER_MSVC;COMPILER_MSVC64;X64BITS;PLATFORM_64BITS;META_IS_SOURCE2</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>true</MinimalRebuild>
@@ -53,11 +56,12 @@
       <AdditionalIncludeDirectories>metamod-source\core;metamod-source\core\sourcehook;C:\cs2_dev\cs2kz_metamod;hl2sdk-cs2\public;hl2sdk-cs2\public\engine;hl2sdk-cs2\public\mathlib;hl2sdk-cs2\public\vstdlib;hl2sdk-cs2\public\tier0;hl2sdk-cs2\public\tier1;hl2sdk-cs2\public\game\server;hl2sdk-cs2\game\shared;hl2sdk-cs2\common;src;hl2sdk-cs2;hl2sdk-cs2\public\entity2;hl2sdk-cs2\game\server;vendor\subhook;vendor\funchook\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies);kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;legacy_stdio_definitions.lib;hl2sdk-cs2\lib\public\win64\tier0.lib;hl2sdk-cs2\lib\public\win64\tier1.lib;hl2sdk-cs2\lib\public\win64\mathlib.lib;hl2sdk-cs2\lib\public\win64\interfaces.lib;psapi.lib;vendor\funchook\lib\funchook.lib;vendor\funchook\lib\distorm.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;legacy_stdio_definitions.lib;hl2sdk-cs2\lib\public\win64\tier0.lib;hl2sdk-cs2\lib\public\win64\tier1.lib;hl2sdk-cs2\lib\public\win64\mathlib.lib;hl2sdk-cs2\lib\public\win64\interfaces.lib;psapi.lib;vendor\funchook\lib\funchook.lib;vendor\funchook\lib\distorm.lib;steam_api64.lib;vendor\protobuf-lib\libprotobuf.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetFileName)</OutputFile>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalLibraryDirectories>hl2sdk-cs2/lib/public/win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

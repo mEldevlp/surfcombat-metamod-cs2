@@ -1,3 +1,9 @@
+#include "../protobuf/generated/cstrike15_usermessages.pb.h"
+#include "../protobuf/generated/usermessages.pb.h"
+#include "../protobuf/generated/cs_gameevents.pb.h"
+#include "../protobuf/generated/gameevents.pb.h"
+#include "../protobuf/generated/te.pb.h"
+
 #include "sc_main.h"
 
 #include "interface.h"

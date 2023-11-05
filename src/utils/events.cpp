@@ -1,17 +1,11 @@
 #include "common.h"
 #include "KeyValues.h"
 #include "eventlistener.h"
-//#include "entity/cbaseplayercontroller.h"
 
 #include "tier0/memdbgon.h"
 #include "../surf/surf.h"
 #include "../utils/utils.h"
 #include "../utils/ctimer.h"
-
-extern IServerGameClients* g_pSource2GameClients;
-extern CEntitySystem* g_pEntitySystem;
-extern CGlobalVars* gpGlobals;
-extern IGameEventManager2* g_gameEventManager;
 
 CUtlVector<CGameEventListener*> g_vecEventListeners;
 

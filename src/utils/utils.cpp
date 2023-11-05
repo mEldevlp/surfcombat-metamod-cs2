@@ -1,4 +1,3 @@
-
 #include "utils.h"
 #include "eventlistener.h"
 #include "convar.h"

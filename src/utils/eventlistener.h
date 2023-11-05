@@ -11,7 +11,6 @@
 typedef void (*FnEventListenerCallback)(IGameEvent* event);
 
 class CGameEventListener;
-
 extern CUtlVector<CGameEventListener*> g_vecEventListeners;
 
 class CGameEventListener : public IGameEventListener2
@@ -52,6 +51,8 @@ public:
 
 	const char* GetEventName() { return m_pszEventName; }
 
+
+
 private:
 	FnEventListenerCallback m_Callback;
 	const char* m_pszEventName;
@@ -59,6 +60,11 @@ private:
 
 void RegisterEventListeners();
 void UnregisterEventListeners();
+
+extern IServerGameClients* g_pSource2GameClients;
+extern CEntitySystem* g_pEntitySystem;
+extern CGlobalVars* gpGlobals;
+extern IGameEventManager2* g_gameEventManager;
 
 #define GAME_EVENT_F(_event)												\
 	void _event##_callback(IGameEvent*);									\
