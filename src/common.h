@@ -7,6 +7,7 @@
 #endif
 
 #include <ISmmPlugin.h>
+#include <engine/igameeventsystem.h>
 #include <igameevents.h>
 #include <iplayerinfo.h>
 #include <sh_vector.h>

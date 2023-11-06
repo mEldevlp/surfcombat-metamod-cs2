@@ -22,8 +22,8 @@
 #include "utils/eventlistener.h"
 
 #include "tier0/memdbgon.h"
-SurfPlugin g_SurfPlugin;
 
+SurfPlugin g_SurfPlugin;
 
 SH_DECL_HOOK2_void(ISource2GameClients, ClientCommand, SH_NOATTRIB, false, CPlayerSlot, const CCommand&);
 SH_DECL_HOOK6_void(ISource2GameEntities, CheckTransmit, SH_NOATTRIB, false, CCheckTransmitInfo**, int, CBitVec<16384>&, const Entity2Networkable_t **, const uint16 *, int);
@@ -31,9 +31,10 @@ SH_DECL_HOOK3_void(ISource2Server, GameFrame, SH_NOATTRIB, false, bool, bool, bo
 SH_DECL_HOOK5(ISource2GameClients, ProcessUsercmds, SH_NOATTRIB, false, float, CPlayerSlot, bf_read *, int, bool, bool);
 SH_DECL_HOOK2_void(CEntitySystem, Spawn, SH_NOATTRIB, false, int, const EntitySpawnInfo_t *);
 SH_DECL_HOOK4_void(ISource2GameClients, ClientPutInServer, SH_NOATTRIB, false, CPlayerSlot, char const *, int, uint64);
+SH_DECL_HOOK2(IGameEventManager2, FireEvent, SH_NOATTRIB, 0, bool, IGameEvent*, bool);
 
 IGameEventManager2* g_gameEventManager = nullptr;
-CEntitySystem *g_pEntitySystem = NULL;
+CEntitySystem *g_pEntitySystem = nullptr;
 
 PLUGIN_EXPOSE(SurfPlugin, g_SurfPlugin);
 
@@ -47,22 +48,21 @@ bool SurfPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bo
 	}
 
 	movement::InitDetours();
-	
-	SH_ADD_HOOK(ISource2GameClients, ClientCommand, g_pSource2GameClients, SH_STATIC(Hook_ClientCommand), false);
-	SH_ADD_HOOK(ISource2Server, GameFrame, interfaces::pServer, SH_STATIC(Hook_GameFrame), false);
-	SH_ADD_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Pre), false);
-	SH_ADD_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Post), true);
-	SH_ADD_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_STATIC(Hook_CheckTransmit), true);
-	SH_ADD_HOOK(ISource2GameClients, ClientPutInServer, g_pSource2GameClients, SH_STATIC(Hook_ClientPutInServer), false);
-	
-	g_gameEventManager = (IGameEventManager2*)(CALL_VIRTUAL(uintptr_t, offsets::GetEventManager, interfaces::pServer) - 8);
+
+	SH_ADD_HOOK(ISource2GameClients, ClientCommand, g_pSource2GameClients, SH_MEMBER(this, &SurfPlugin::Hook_ClientCommand), false);
+	SH_ADD_HOOK(ISource2Server, GameFrame, interfaces::pServer, SH_MEMBER(this, &SurfPlugin::Hook_GameFrame), false);
+	SH_ADD_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_MEMBER(this, &SurfPlugin::Hook_ProcessUsercmds_Pre), false);
+	SH_ADD_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_MEMBER(this, &SurfPlugin::Hook_ProcessUsercmds_Post), true);
+	SH_ADD_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_MEMBER(this, &SurfPlugin::Hook_CheckTransmit), true);
+	SH_ADD_HOOK(ISource2GameClients, ClientPutInServer, g_pSource2GameClients, SH_MEMBER(this, &SurfPlugin::Hook_ClientPutInServer), false);
+	SH_ADD_HOOK(IGameEventManager2, FireEvent, g_gameEventManager, SH_MEMBER(this, &SurfPlugin::Hook_FireGameEvent), false);
 
 	if (!g_gameEventManager)
 	{
-		ConMsg("Failed to find GameEventManager\n");
+		META_CONPRINTF("Failed to find GameEventManager\n");
 	}
 
-	RegisterEventListeners();
+	//RegisterEventListeners();
 
 	SURF::misc::RegisterCommands();
 
@@ -71,15 +71,15 @@ bool SurfPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bo
 
 bool SurfPlugin::Unload(char *error, size_t maxlen)
 {
-	SH_REMOVE_HOOK(ISource2GameClients, ClientCommand, g_pSource2GameClients, SH_STATIC(Hook_ClientCommand), false);
-	SH_REMOVE_HOOK(ISource2Server, GameFrame, interfaces::pServer, SH_STATIC(Hook_GameFrame), false);
-	SH_REMOVE_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Pre), false);
-	SH_REMOVE_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_STATIC(Hook_ProcessUsercmds_Post), true);
-	SH_REMOVE_HOOK(CEntitySystem, Spawn, g_pEntitySystem, SH_STATIC(Hook_CEntitySystem_Spawn_Post), true);
-	SH_REMOVE_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_STATIC(Hook_CheckTransmit), true);
-	SH_REMOVE_HOOK(ISource2GameClients, ClientPutInServer, g_pSource2GameClients, SH_STATIC(Hook_ClientPutInServer), false);
+	SH_REMOVE_HOOK(ISource2GameClients, ClientCommand, g_pSource2GameClients, SH_MEMBER(this, &SurfPlugin::Hook_ClientCommand), false);
+	SH_REMOVE_HOOK(ISource2Server, GameFrame, interfaces::pServer, SH_MEMBER(this, &SurfPlugin::Hook_GameFrame), false);
+	SH_REMOVE_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_MEMBER(this, &SurfPlugin::Hook_ProcessUsercmds_Pre), false);
+	SH_REMOVE_HOOK(ISource2GameClients, ProcessUsercmds, g_pSource2GameClients, SH_MEMBER(this, &SurfPlugin::Hook_ProcessUsercmds_Post), true);
+	SH_REMOVE_HOOK(CEntitySystem, Spawn, g_pEntitySystem, SH_MEMBER(this, &SurfPlugin::Hook_CEntitySystem_Spawn_Post), true);
+	SH_REMOVE_HOOK(ISource2GameEntities, CheckTransmit, g_pSource2GameEntities, SH_MEMBER(this, &SurfPlugin::Hook_CheckTransmit), true);
+	SH_REMOVE_HOOK(ISource2GameClients, ClientPutInServer, g_pSource2GameClients, SH_MEMBER(this, &SurfPlugin::Hook_ClientPutInServer), false);
+	SH_REMOVE_HOOK(IGameEventManager2, FireEvent, g_gameEventManager, SH_MEMBER(this, &SurfPlugin::Hook_FireGameEvent), false);
 
-	
 	utils::Cleanup();
 	return true;
 }
@@ -105,7 +105,7 @@ const char *SurfPlugin::GetLicense()
 
 const char *SurfPlugin::GetVersion()
 {
-	return "0.2-a";
+	return "0.3-a";
 }
 
 const char *SurfPlugin::GetDate()
@@ -138,18 +138,18 @@ const char *SurfPlugin::GetURL()
 	return "https://github.com/mEldevlp/surfcombat-metamod-cs2";
 }
 
-internal float Hook_ProcessUsercmds_Pre(CPlayerSlot slot, bf_read *buf, int numcmds, bool ignore, bool paused)
+float SurfPlugin::Hook_ProcessUsercmds_Pre(CPlayerSlot slot, bf_read *buf, int numcmds, bool ignore, bool paused)
 {
 	RETURN_META_VALUE(MRES_IGNORED, 0.0f);
 }
 
-internal float Hook_ProcessUsercmds_Post(CPlayerSlot slot, bf_read *buf, int numcmds, bool ignore, bool paused)
+float SurfPlugin::Hook_ProcessUsercmds_Post(CPlayerSlot slot, bf_read *buf, int numcmds, bool ignore, bool paused)
 {
 	SURF::HUD::OnProcessUsercmds_Post(slot, buf, numcmds, ignore, paused);
 	RETURN_META_VALUE(MRES_IGNORED, 0.0f);
 }
 
-internal void Hook_CEntitySystem_Spawn_Post(int nCount, const EntitySpawnInfo_t *pInfo_DontUse)
+void SurfPlugin::Hook_CEntitySystem_Spawn_Post(int nCount, const EntitySpawnInfo_t *pInfo_DontUse)
 {
 	/*
 	EntitySpawnInfo_t *pInfo = (EntitySpawnInfo_t *)pInfo_DontUse;
@@ -166,18 +166,18 @@ internal void Hook_CEntitySystem_Spawn_Post(int nCount, const EntitySpawnInfo_t 
 	RETURN_META(MRES_IGNORED);
 }
 
-internal void Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)
+void SurfPlugin::Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick)
 {
 	if (!g_pEntitySystem)
 	{
 		g_pEntitySystem = interfaces::pGameResourceServiceServer->GetGameEntitySystem();
 		assert(g_pEntitySystem);
-		SH_ADD_HOOK(CEntitySystem, Spawn, g_pEntitySystem, SH_STATIC(Hook_CEntitySystem_Spawn_Post), true);
+		SH_ADD_HOOK(CEntitySystem, Spawn, g_pEntitySystem, SH_MEMBER(this, &SurfPlugin::Hook_CEntitySystem_Spawn_Post), true);
 	}
 	RETURN_META(MRES_IGNORED);
 }
 
-internal void Hook_ClientCommand(CPlayerSlot slot, const CCommand& args)
+void SurfPlugin::Hook_ClientCommand(CPlayerSlot slot, const CCommand& args)
 {
 	if (META_RES result = scmd::OnClientCommand(slot, args))
 	{
@@ -186,14 +186,26 @@ internal void Hook_ClientCommand(CPlayerSlot slot, const CCommand& args)
 	RETURN_META(MRES_IGNORED);
 }
 
-internal void Hook_CheckTransmit(CCheckTransmitInfo **pInfo, int infoCount, CBitVec<16384> &, const Entity2Networkable_t **pNetworkables, const uint16 *pEntityIndicies, int nEntities)
+void SurfPlugin::Hook_CheckTransmit(CCheckTransmitInfo **pInfo, int infoCount, CBitVec<16384> &, const Entity2Networkable_t **pNetworkables, const uint16 *pEntityIndicies, int nEntities)
 {
 	SURF::misc::OnCheckTransmit(pInfo, infoCount);
 	RETURN_META(MRES_IGNORED);
 }
 
-internal void Hook_ClientPutInServer(CPlayerSlot slot, char const *pszName, int type, uint64 xuid)
+void SurfPlugin::Hook_ClientPutInServer(CPlayerSlot slot, char const *pszName, int type, uint64 xuid)
 {
 	SURF::misc::OnClientPutInServer(slot);
 	RETURN_META(MRES_IGNORED);
+}
+
+bool SurfPlugin::Hook_FireGameEvent(IGameEvent* pEvent, bool bDontBroadcast)
+{
+	if (!pEvent) return false;
+
+	//TODO: make eventsystem by names 
+	// g_EventManager[pEvent->GetName()]->DoCallback();
+
+	META_CONPRINTF("%s\n", pEvent->GetName());
+
+	return true;
 }

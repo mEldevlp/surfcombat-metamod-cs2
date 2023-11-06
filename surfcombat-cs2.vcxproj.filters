@@ -52,9 +52,6 @@
     <ClCompile Include="src\utils\utils.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\events.cpp">
-      <Filter>UTILS</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\ctimer.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
@@ -79,9 +76,6 @@
     </ClInclude>
     <ClInclude Include="src\surf\surf.h">
       <Filter>SURF</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\eventlistener.h">
-      <Filter>UTILS</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\ctimer.h">
       <Filter>UTILS</Filter>

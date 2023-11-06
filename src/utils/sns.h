@@ -12,7 +12,7 @@ typedef enum : unsigned short
 	k_EIPTypeV4,
 	k_EIPTypeV6,
 } ipadrtype_t;
-
+/*
 struct netadr_t
 {
 	union {
@@ -40,7 +40,7 @@ struct netadr_t
 	uint32		m_unIPv6Scope;			// IPv6 scope
 	ipadrtype_t		m_usType;				// ipadrtype_t
 	unsigned short	m_usPort;
-};
+};*/
 
 struct RecvPktInfo_t
 {

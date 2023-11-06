@@ -59,6 +59,7 @@ internal SCMD_CALLBACK(Command_SCTest)
 
 internal SCMD_CALLBACK(Command_SCTest2)
 {
+	/*
 	if (g_vecEventListeners.Count() == 0)
 	{
 		utils::ClientPrintAll(MsgDest::HUD_PRINTTALK, " \5[REGISTRED EVENTS] \7no registred events");
@@ -68,6 +69,7 @@ internal SCMD_CALLBACK(Command_SCTest2)
 	{
 		utils::ClientPrintAll(MsgDest::HUD_PRINTTALK, " \5[REGISTRED EVENTS] \7%s", g_vecEventListeners[i]->GetEventName());
 	}
+	*/
 
 	return MRES_SUPERCEDE;
 }

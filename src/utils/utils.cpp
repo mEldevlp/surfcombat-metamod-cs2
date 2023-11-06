@@ -31,7 +31,6 @@ void modules::Initialize()
 	modules::server = new CModule(GAMEBIN, "server");
 	modules::schemasystem = new CModule(ROOTBIN, "schemasystem");
 	modules::steamnetworkingsockets = new CModule(ROOTBIN, "steamnetworkingsockets");
-
 }
 
 bool interfaces::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
@@ -43,6 +42,7 @@ bool interfaces::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
 	GET_V_IFACE_CURRENT(GetEngineFactory, interfaces::pEngine, IVEngineServer2, INTERFACEVERSION_VENGINESERVER);
 	GET_V_IFACE_CURRENT(GetServerFactory, interfaces::pServer, ISource2Server, INTERFACEVERSION_SERVERGAMEDLL);
 	GET_V_IFACE_CURRENT(GetEngineFactory, interfaces::pSchemaSystem, CSchemaSystem, SCHEMASYSTEM_INTERFACE_VERSION);
+	g_gameEventManager = (IGameEventManager2*)(CALL_VIRTUAL(uintptr_t, offsets::GetEventManager, interfaces::pServer) - 8);
 
 	return true;
 }
@@ -79,7 +79,7 @@ bool utils::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
 void utils::Cleanup()
 {
 	FlushAllDetours();
-	UnregisterEventListeners();
+	//UnregisterEventListeners();
 }
 
 CGlobalVars *utils::GetServerGlobals()

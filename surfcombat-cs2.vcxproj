@@ -66,7 +66,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\ctimer.cpp" />
-    <ClCompile Include="src\utils\events.cpp" />
     <ClCompile Include="src\utils\plat_win.cpp" />
     <ClCompile Include="src\sc_main.cpp" />
     <ClCompile Include="hl2sdk-cs2\entity2\entitysystem.cpp" />
@@ -90,7 +89,6 @@
     <ClInclude Include="src\movement\movement.h" />
     <ClInclude Include="src\sc_main.h" />
     <ClInclude Include="src\utils\ctimer.h" />
-    <ClInclude Include="src\utils\eventlistener.h" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
