@@ -13,6 +13,8 @@
 #include <sh_vector.h>
 #include <stdint.h>
 
+#include <deque>
+
 #include "entity2/entitysystem.h"
 #define MAXPLAYERS 64
 

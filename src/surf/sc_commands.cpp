@@ -29,6 +29,7 @@ internal SCMD_CALLBACK(Command_SCHide)
 
 internal SCMD_CALLBACK(Command_SCTest)
 {
+	/*
 	SURFPlayer* player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
 
 	CCSPlayerPawn* pPawn = player->GetPawn();
@@ -53,7 +54,7 @@ internal SCMD_CALLBACK(Command_SCTest)
 	}
 
 	player->GetPawn()->m_clrRender(colorteam);
-
+	*/
 	return MRES_SUPERCEDE;
 }
 

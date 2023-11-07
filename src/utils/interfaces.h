@@ -14,4 +14,5 @@ namespace interfaces
 	inline IVEngineServer2 *pEngine = nullptr;
 	inline ISource2Server *pServer = nullptr;
 	inline IGameEventManager2 *pGameEventManager = nullptr;
+	inline INetworkServerService* pNetworkServerService = nullptr;
 }
