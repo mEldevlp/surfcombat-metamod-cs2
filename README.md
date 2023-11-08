@@ -26,6 +26,7 @@ ambuild
 #### Features
 
 - [x] Red and Blue player models
+- [ ] Spawn protection
 - [ ] Hide players and legs ( !hide & !legs )
 - [ ] Deathmatch system
 - [ ] Admin\VIP system
