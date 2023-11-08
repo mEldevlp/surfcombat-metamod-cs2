@@ -14,7 +14,7 @@ internal void AddSpeedText(SURFPlayer *player, char* buffer, int size)
 	Vector velocity;
 	player->GetVelocity(&velocity);
 
-	snprintf(speed, sizeof(speed), "Speed: %.0f", velocity.Length2D());
+	snprintf(speed, sizeof(speed), "Speed: %.0f          ", velocity.Length2D());
 
 	strncat(buffer, speed, size);
 }
@@ -23,14 +23,14 @@ internal void AddKeyText(SURFPlayer *player, char *buffer, int size)
 {
 	char keys[128];
 	keys[0] = 0;
-	snprintf(keys, sizeof(keys), "Keys: %s %s %s %s %s %s",
-		player->IsButtonDown(IN_MOVELEFT) ? "A" : "_",
+
+	snprintf(keys, sizeof(keys), "Keys:  %s %s %s\n                                     %s %s %s",
+		player->IsButtonDown(IN_TURNLEFT) ? "+L" : "_",
 		player->IsButtonDown(IN_FORWARD) ? "W" : "_",
+		player->IsButtonDown(IN_TURNRIGHT) ? "+R" : "_",
+		player->IsButtonDown(IN_MOVELEFT) ? "A" : "_",
 		player->IsButtonDown(IN_BACK) ? "S" : "_",
-		player->IsButtonDown(IN_MOVERIGHT) ? "D" : "_",
-		player->IsButtonDown(IN_DUCK) ? "C" : "_",
-		player->IsButtonDown(IN_JUMP) ? "J" : "_");
-		//todo: turn(left, right) binds	// +turnleft, +turnright
+		player->IsButtonDown(IN_MOVERIGHT) ? "D" : "_");
 
 	strncat(buffer, keys, size);
 }
@@ -40,7 +40,7 @@ void SURF::HUD::DrawSpeedPanel(SURFPlayer *player)
 	char buffer[1024];
 	buffer[0] = 0;
 	AddSpeedText(player, buffer, sizeof(buffer));
-	strcat(buffer, "\n"); 
+	//strcat(buffer, "\n"); 
 	AddKeyText(player, buffer, sizeof(buffer));
 
 	utils::PrintAlert(player->GetController(), "%s", buffer);
