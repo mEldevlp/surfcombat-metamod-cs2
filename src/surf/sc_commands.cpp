@@ -16,7 +16,7 @@ internal SCMD_CALLBACK(Command_SCNoclip)
 internal SCMD_CALLBACK(Command_SCHidelegs)
 {
 	SURFPlayer *player = SURF::GetSURFPlayerManager()->ToPlayer(controller);
-	player->UpdatePlayerModelAlpha();
+	//player->ToggleHideLegs();
 	return MRES_SUPERCEDE;
 }
 
@@ -78,7 +78,7 @@ internal SCMD_CALLBACK(Command_SCTest2)
 void SURF::misc::RegisterCommands()
 {
 	scmd::RegisterCmd("noclip",     Command_SCNoclip); // For debug. Not inlcuded in release
-	scmd::RegisterCmd("hidelegs",   Command_SCHidelegs);
+	scmd::RegisterCmd("legs",		Command_SCHidelegs);
 	scmd::RegisterCmd("hide",	    Command_SCHide);
 	scmd::RegisterCmd("redblue",	Command_SCTest); // for test features
 	scmd::RegisterCmd("events",		Command_SCTest2); // for test features
@@ -95,10 +95,21 @@ void SURF::misc::OnCheckTransmit(CCheckTransmitInfo **pInfo, int infoCount)
 		CPlayerSlot targetSlot = pTransmitInfo->m_nClientEntityIndex;
 		SURFPlayer *targetPlayer = SURF::GetSURFPlayerManager()->ToPlayer(targetSlot);
 
+		/*
+		if (targetPlayer->hidePlayerLegs)
+		{
+			CBasePlayerPawn* pawn = SURF::GetSURFPlayerManager()->players[targetPlayer->GetController()->entindex()]->GetPawn();
+			if (!pawn) continue;
+			if (pTransmitInfo->m_pTransmitEdict->IsBitSet(pawn->entindex()))
+			{
+				pTransmitInfo->m_pTransmitEdict->Clear(pawn->entindex());
+			}
+		}
+		*/
+
 		// Don't hide if player is dead/spectating or if they aren't hiding other players.
 		if (!targetPlayer->hideOtherPlayers) continue;
 		if (targetPlayer->GetPawn()->m_lifeState() != LIFE_ALIVE) continue;
-
 		// Loop through the list of players and see if they need to be hidden away from our target player.
 		for (int j = 0; j < MAXPLAYERS; j++)
 		{

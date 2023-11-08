@@ -14,6 +14,8 @@
 #include <stdint.h>
 
 #include <deque>
+#include <queue>
+#include <functional>
 
 #include "entity2/entitysystem.h"
 #define MAXPLAYERS 64
@@ -52,3 +54,30 @@ typedef uint64_t u64;
 
 typedef float f32;
 typedef double f64;
+
+enum EventID : uint16 {
+	PLAYER_ACTIVATE = 5,
+	PLAYER_CONNECT_FULL = 6,
+	PLAYER_CONNECT = 8,
+
+	PLAYER_DISCONNECT = 9,
+	PLAYER_SPAWN = 11,
+	PLAYER_TEAM = 12,
+	PLAYER_DEATH = 53,
+	PLAYER_SOUND = 273,
+
+	WEAPON_FIRE = 158,
+
+	ROUND_FREEZE_END = 51,
+	ROUND_START = 47,
+	ROUND_END = 48,
+	
+	CS_WIN_PANEL_ROUND = 214,
+	CS_ROUND_FINAL_BEEP = 212,
+	CS_ROUND_START_BEEP = 213,
+
+	ITEM_PICKUP = 168,
+
+	SWITCH_TEAM = 228,
+	EVENT_LAST,
+};

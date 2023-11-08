@@ -11,7 +11,6 @@
 #include "icvar.h"
 #include "entity2/entitysystem.h"
 
-#include "common.h"
 #include "utils/utils.h"
 #include "utils/recipientfilters.h"
 #include "utils/detours.h"
@@ -20,9 +19,14 @@
 
 #include "movement/movement.h"
 #include "surf/surf.h"
-#include "utils/eventlistener.h"
+#include "utils/ctimer.h"
+#include "surf/sc_event_manager.h"
 
 #include "tier0/memdbgon.h"
+
+float g_flUniversalTime;
+float g_flLastTickedTime;
+bool g_bHasTicked;
 
 SurfPlugin g_SurfPlugin;
 
@@ -66,7 +70,7 @@ bool SurfPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bo
 		META_CONPRINTF("Failed to find GameEventManager\n");
 	}
 
-	//RegisterEventListeners();
+	Init_EventManager();
 
 	SURF::misc::RegisterCommands();
 
@@ -115,7 +119,7 @@ const char *SurfPlugin::GetLicense()
 
 const char *SurfPlugin::GetVersion()
 {
-	return "0.3-a";
+	return "0.4-a";
 }
 
 const char *SurfPlugin::GetDate()
@@ -191,6 +195,42 @@ void SurfPlugin::Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick
 		this->m_nextFrame.pop_front();
 	}
 
+	if (simulating && g_bHasTicked)
+	{
+		g_flUniversalTime += utils::GetServerGlobals()->curtime - g_flLastTickedTime;
+	}
+	else
+	{
+		g_flUniversalTime += utils::GetServerGlobals()->interval_per_tick;
+	}
+
+	g_flLastTickedTime = utils::GetServerGlobals()->curtime;
+	g_bHasTicked = true;
+
+	for (int i = g_timers.Tail(); i != g_timers.InvalidIndex();)
+	{
+		auto timer = g_timers[i];
+
+		int prevIndex = i;
+		i = g_timers.Previous(i);
+
+		if (timer->m_flLastExecute == -1)
+			timer->m_flLastExecute = g_flUniversalTime;
+
+		// Timer execute 
+		if (timer->m_flLastExecute + timer->m_flInterval <= g_flUniversalTime)
+		{
+			if (!timer->Execute())
+			{
+				delete timer;
+				g_timers.Remove(prevIndex);
+			}
+			else
+			{
+				timer->m_flLastExecute = g_flUniversalTime;
+			}
+		}
+	}
 
 	RETURN_META(MRES_IGNORED);
 }
@@ -218,91 +258,31 @@ void SurfPlugin::Hook_ClientPutInServer(CPlayerSlot slot, char const *pszName, i
 
 void SurfPlugin::Hook_StartupServer(const GameSessionConfiguration_t& config, ISource2WorldSession*, const char*)
 {
+	if (g_bHasTicked)
+		RemoveMapTimers();
 
+	g_bHasTicked = false;
 }
-
-enum EventID {
-	PLAYER_ACTIVATE = 5,
-	PLAYER_CONNECT_FULL = 6,
-	PLAYER_CONNECT = 8,
-
-	PLAYER_DISCONNECT = 9,
-	PLAYER_SPAWN = 11,
-	PLAYER_TEAM = 12,
-	PLAYER_DEATH = 53,
-	PLAYER_SOUND = 273,
-
-	WEAPON_FIRE = 158,
-
-	ROUND_FREEZE_END = 51,
-	ROUND_START = 47,
-	ROUND_END = 48,
-	
-	CS_WIN_PANEL_ROUND = 214,
-	CS_ROUND_FINAL_BEEP = 212,
-	CS_ROUND_START_BEEP = 213,
-
-	ITEM_PICKUP = 168,
-
-	SWITCH_TEAM = 228,
-};
 
 bool SurfPlugin::Hook_FireGameEvent(IGameEvent* pEvent, bool bDontBroadcast)
 {
 	if (!pEvent) return false;
-	
-	switch (pEvent->GetID())
-	{
-		case EventID::PLAYER_SPAWN:
-		{
-			CBasePlayerController* pController = static_cast<CBasePlayerController*>(pEvent->GetPlayerController("userid"));
 
-			//if (!pController  || pController->m_steamID() == 0)
-			if (!pController)
-				return false;
+	int eventid = pEvent->GetID();
+	const char* eventname = pEvent->GetName();
 
-			this->NextFrame([hController = CHandle<CBasePlayerController>(pController)]()
-				{
-					CCSPlayerController* pController = static_cast<CCSPlayerController*>(hController.Get());
-					if (!pController)
-						return;
-
-					CCSPlayerPawnBase* pPawn = pController->m_hPawn();
-					if (!pPawn || (pPawn->m_lifeState() != LifeState_t::LIFE_ALIVE))
-						return;
-
-					pPawn->m_pCollision->m_CollisionGroup() = COLLISION_GROUP_DEBRIS;
-					utils::EntityCollisionRulesChanged(pPawn);
-
-					Color colorteam;
-					int alpha = pPawn->m_clrRender().a();
-
-					switch (pPawn->m_iTeamNum)
-					{
-					case CS_TEAM_CT:
-					{
-						colorteam.SetColor(0, 0, 255, alpha);
-						break;
-					}
-
-					case CS_TEAM_T:
-					{
-						colorteam.SetColor(255, 0, 0, alpha);
-						break;
-					}
-					}
-
-					pPawn->m_clrRender(colorteam);
-					
-				});
-				break;
-		}
-	}	
-
-	// annoying spam skip
 	if (pEvent->GetID() == EventID::PLAYER_SOUND) return true;
 
-	META_CONPRINTF("%s-%d\n", pEvent->GetName(), pEvent->GetID());
+	// if event founded
+	if (g_umpEventManager.find(static_cast<EventID>(eventid)) != g_umpEventManager.end())
+	{
+		META_CONPRINTF("[EVENT] %s - %d\n", eventname, eventid);
+		g_umpEventManager[static_cast<EventID>(eventid)]->CallBack(pEvent);
+	}
+	else
+	{
+		META_CONPRINTF("unregistred event(%s - %d)\n", eventname, eventid);
+	}
 
 	return true;
 }

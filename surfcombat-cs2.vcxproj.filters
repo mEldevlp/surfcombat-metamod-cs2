@@ -55,6 +55,9 @@
     <ClCompile Include="src\utils\ctimer.cpp">
       <Filter>UTILS</Filter>
     </ClCompile>
+    <ClCompile Include="src\surf\sc_event_manager.cpp">
+      <Filter>SURF</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SURF">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="src\utils\ctimer.h">
       <Filter>UTILS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\surf\sc_event_manager.h">
+      <Filter>SURF</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

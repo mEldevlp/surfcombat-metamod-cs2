@@ -26,6 +26,7 @@ private:
 	bool inNoclip;
 	TurnState previousTurnState;
 public:
+	void ToggleHideLegs();
 	void ToggleHide();
 	void DisableNoclip();
 	void ToggleNoclip();
@@ -37,15 +38,10 @@ public:
 	bool holdingStill{};
 	f32 teleportTime{};
 
-	void SetCheckpoint();
-	void DoTeleport(i32 index);
-	void TpHoldPlayerStill();
-	void TpToCheckpoint();
-	void TpToPrevCp();
-	void TpToNextCp();
 
 	// misc
 	bool hideOtherPlayers{};
+	bool hidePlayerLegs{};
 };
 
 class CSURFPlayerManager : public CMovementPlayerManager

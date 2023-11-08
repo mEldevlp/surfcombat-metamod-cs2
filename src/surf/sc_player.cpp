@@ -96,11 +96,6 @@ void SURFPlayer::DisableNoclip()
 	this->inNoclip = false;
 }
 
-
-void SURFPlayer::TpHoldPlayerStill()
-{
-}
-
 void SURFPlayer::OnStartProcessMovement()
 {
 	MovementPlayer::OnStartProcessMovement();
@@ -116,6 +111,11 @@ void SURFPlayer::OnStopProcessMovement()
 	SURF::HUD::DrawSpeedPanel(this);
 
 	MovementPlayer::OnStopProcessMovement();
+}
+
+void SURFPlayer::ToggleHideLegs()
+{
+	this->hidePlayerLegs = !this->hidePlayerLegs;
 }
 
 void SURFPlayer::ToggleHide()

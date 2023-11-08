@@ -2,7 +2,6 @@
 
 #include "common.h"
 
-
 class SurfPlugin : public ISmmPlugin, public IMetamodListener
 {
 public:
