@@ -15,7 +15,7 @@ public:
 	Event(std::function<bool(IGameEvent*)> callback, std::function<void()> init)
 	{
 		g_qEventsInit.push(init);
-		m_fnCallback = callback;
+		this->m_fnCallback = callback;
 	}
 
 	~Event()
