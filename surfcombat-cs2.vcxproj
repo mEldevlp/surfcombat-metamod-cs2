@@ -66,6 +66,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\surf\sc_event_manager.cpp" />
+    <ClCompile Include="src\surf\sc_features.cpp" />
     <ClCompile Include="src\utils\ctimer.cpp" />
     <ClCompile Include="src\utils\plat_win.cpp" />
     <ClCompile Include="src\sc_main.cpp" />
@@ -87,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\surf\sc_event_manager.h" />
+    <ClInclude Include="src\surf\sc_features.h" />
     <ClInclude Include="src\surf\surf.h" />
     <ClInclude Include="src\movement\movement.h" />
     <ClInclude Include="src\sc_main.h" />

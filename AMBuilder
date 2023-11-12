@@ -64,6 +64,7 @@ for sdk_name in MMSPlugin.sdks:
       os.path.join(builder.sourcePath, 'src', 'surf', 'sc_manager.cpp'),
       os.path.join(builder.sourcePath, 'src', 'surf', 'sc_player.cpp'),
       os.path.join(builder.sourcePath, 'src', 'surf', 'sc_event_manager.cpp'),
+      os.path.join(builder.sourcePath, 'src', 'surf', 'sc_features.cpp'),
     ]
 
     if sdk_name in ['cs2']:
