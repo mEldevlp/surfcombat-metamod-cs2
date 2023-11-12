@@ -15,7 +15,8 @@ void SURFPlayer::EnableGodMode()
 	if (pawn->m_bTakesDamage())
 	{
 		pawn->m_bTakesDamage(false);
-	}*/
+	}
+	*/
 }
 
 void SURFPlayer::OnStartTouchGround()

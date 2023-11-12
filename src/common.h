@@ -81,3 +81,6 @@ enum EventID : uint16 {
 	SWITCH_TEAM = 228,
 	EVENT_LAST,
 };
+
+void Message(const char* msg, ...);
+void Panic(const char* msg, ...);

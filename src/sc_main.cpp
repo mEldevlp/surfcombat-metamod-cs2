@@ -21,6 +21,7 @@
 #include "surf/surf.h"
 #include "utils/ctimer.h"
 #include "surf/sc_event_manager.h"
+#include "surf/sc_features.h"
 
 #include "tier0/memdbgon.h"
 
@@ -29,6 +30,37 @@ float g_flLastTickedTime;
 bool g_bHasTicked;
 
 SurfPlugin g_SurfPlugin;
+
+void Message(const char* msg, ...)
+{
+	va_list args;
+	va_start(args, msg);
+
+	char buf[1024] = {};
+	V_vsnprintf(buf, sizeof(buf) - 1, msg, args);
+
+	ConColorMsg(Color(255, 0, 255, 255), "[SURF] %s", buf);
+
+	va_end(args);
+}
+
+void Panic(const char* msg, ...)
+{
+	va_list args;
+	va_start(args, msg);
+
+	char buf[1024] = {};
+	V_vsnprintf(buf, sizeof(buf) - 1, msg, args);
+
+	if (CommandLine()->HasParm("-dedicated"))
+		Warning("[SURF] %s", buf);
+#ifdef _WIN32
+	else
+		MessageBoxA(nullptr, buf, "Warning", 0);
+#endif
+
+	va_end(args);
+}
 
 class GameSessionConfiguration_t { };
 SH_DECL_HOOK3_void(INetworkServerService, StartupServer, SH_NOATTRIB, 0, const GameSessionConfiguration_t&, ISource2WorldSession*, const char*);
@@ -71,6 +103,7 @@ bool SurfPlugin::Load(PluginId id, ISmmAPI *ismm, char *error, size_t maxlen, bo
 	}
 
 	Init_EventManager();
+	g_SpawnProtection.Init_SpawnProtection();
 
 	SURF::misc::RegisterCommands();
 
@@ -119,7 +152,7 @@ const char *SurfPlugin::GetLicense()
 
 const char *SurfPlugin::GetVersion()
 {
-	return "0.4-a";
+	return "0.5-a";
 }
 
 const char *SurfPlugin::GetDate()
@@ -134,7 +167,7 @@ const char *SurfPlugin::GetLogTag()
 
 const char *SurfPlugin::GetAuthor()
 {
-	return "\\mEl\\ & zer0.k";
+	return "\\mEl\\";
 }
 
 const char *SurfPlugin::GetDescription()
@@ -271,17 +304,9 @@ bool SurfPlugin::Hook_FireGameEvent(IGameEvent* pEvent, bool bDontBroadcast)
 	int eventid = pEvent->GetID();
 	const char* eventname = pEvent->GetName();
 
-	if (pEvent->GetID() == EventID::PLAYER_SOUND) return true;
-
-	// if event founded
 	if (g_umpEventManager.find(static_cast<EventID>(eventid)) != g_umpEventManager.end())
 	{
-		META_CONPRINTF("[EVENT] %s - %d\n", eventname, eventid);
 		g_umpEventManager[static_cast<EventID>(eventid)]->CallBack(pEvent);
-	}
-	else
-	{
-		META_CONPRINTF("unregistred event(%s - %d)\n", eventname, eventid);
 	}
 
 	return true;
