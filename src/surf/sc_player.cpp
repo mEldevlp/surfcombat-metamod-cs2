@@ -109,7 +109,7 @@ void SURFPlayer::OnStartProcessMovement()
 
 void SURFPlayer::OnStopProcessMovement()
 {
-	SURF::HUD::DrawSpeedPanel(this);
+	//SURF::HUD::DrawSpeedPanel(this);
 
 	MovementPlayer::OnStopProcessMovement();
 }

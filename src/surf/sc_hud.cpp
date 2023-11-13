@@ -40,8 +40,8 @@ void SURF::HUD::DrawSpeedPanel(SURFPlayer *player)
 	char buffer[1024];
 	buffer[0] = 0;
 	AddSpeedText(player, buffer, sizeof(buffer));
-	//strcat(buffer, "\n"); 
 	AddKeyText(player, buffer, sizeof(buffer));
 
-	utils::PrintAlert(player->GetController(), "%s", buffer);
+
+	//utils::PrintAlert(static_cast<CBasePlayerController*>(player->GetController()), "%s", buffer);
 }

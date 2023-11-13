@@ -19,6 +19,7 @@ DECLARE_DETOUR(CCSGameRules_ctor, Detour_CCSGameRules_ctor, &modules::server);
 DECLARE_DETOUR(RecvServerBrowserPacket, Detour_RecvServerBrowserPacket, &modules::steamnetworkingsockets);
 
 DECLARE_MOVEMENT_DETOUR(ProcessMovement);
+
 /*
 DECLARE_MOVEMENT_DETOUR(GetMaxSpeed);
 
@@ -109,40 +110,12 @@ void FASTCALL Detour_CBaseTrigger_StartTouch(CBaseTrigger *this_, CBaseEntity *p
 {
 	CBaseTrigger_StartTouch(this_, pOther);
 	
-	if (utils::IsEntityPawn(pOther))
-	{
-		if (IsEntTriggerMultiple((CBaseEntity *)this_))
-		{
-			if (IsTriggerStartZone(this_))
-			{
-				utils::PrintChat(pOther, "StartTouch: start zone trigger");
-			}
-			else if (IsTriggerEndZone(this_))
-			{
-				utils::PrintChat(pOther, "StartTouch: end zone trigger");
-			}
-		}
-	}
 }
 
 void FASTCALL Detour_CBaseTrigger_EndTouch(CBaseTrigger *this_, CBaseEntity *pOther)
 {
 	CBaseTrigger_EndTouch(this_, pOther);
 	
-	if (utils::IsEntityPawn(pOther))
-	{
-		if (IsEntTriggerMultiple((CBaseEntity *)this_))
-		{
-			if (IsTriggerStartZone(this_))
-			{
-				utils::PrintChat(pOther, "StartTouch: start zone trigger");
-			}
-			else if (IsTriggerEndZone(this_))
-			{
-				utils::PrintChat(pOther, "StartTouch: end zone trigger");
-			}
-		}
-	}
 }
 
 void *FASTCALL Detour_CCSGameRules_ctor(void *this_)

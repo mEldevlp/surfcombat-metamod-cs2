@@ -24,7 +24,7 @@ GAME_EVENT(player_spawn, EventID::PLAYER_SPAWN)
 			utils::EntityCollisionRulesChanged(pPawn);
 		});
 
-	utils::ClientPrint(pController, MsgDest::HUD_PRINTCENTER, "Spawn Protection %d sec.", (int)g_SpawnProtection.GetTimeProtection());
+	utils::PrintCentre(pController, "Spawn Protection %d sec.", (int)g_SpawnProtection.GetTimeProtection());
 	
 	new CTimer(g_SpawnProtection.GetTimeProtection() + 1.0f, false, [hController = CHandle<CBasePlayerController>(pController)]()
 		{
@@ -44,7 +44,7 @@ GAME_EVENT(player_spawn, EventID::PLAYER_SPAWN)
 			else if (pPawn->m_iTeamNum == CS_TEAM_T) colorteam.SetColor(255, 0, 0, alpha);
 			else return -1.0f;
 
-			utils::ClientPrint(pController, MsgDest::HUD_PRINTCENTER, "Protection is gone");
+			utils::PrintCentre(pController, "Protection is gone");
 			pPawn->m_clrRender(colorteam);
 			pPawn->m_bTakesDamage(true);
 
