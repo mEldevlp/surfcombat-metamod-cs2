@@ -276,12 +276,7 @@ bool SurfPlugin::Hook_FireGameEvent(IGameEvent* pEvent, bool bDontBroadcast)
 	// if event founded
 	if (g_umpEventManager.find(static_cast<EventID>(eventid)) != g_umpEventManager.end())
 	{
-		META_CONPRINTF("[EVENT] %s - %d\n", eventname, eventid);
 		g_umpEventManager[static_cast<EventID>(eventid)]->CallBack(pEvent);
-	}
-	else
-	{
-		META_CONPRINTF("unregistred event(%s - %d)\n", eventname, eventid);
 	}
 
 	return true;

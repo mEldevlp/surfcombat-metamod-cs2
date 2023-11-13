@@ -45,14 +45,14 @@ namespace utils
 	bool IsButtonDown(CInButtonState *buttons, u64 button, bool onlyDown = false);
 	CPlayerSlot GetEntityPlayerSlot(CBaseEntity *entity);
 
-	void ClientPrintAll(int hud_dest, const char* format, ...);
-	void ClientPrint(CBasePlayerController* player, int hud_dest, const char* format, ...);
+	void ClientPrintAll(int hud_dest, const char* msg);
+	void ClientPrint(CBasePlayerController* player, int hud_dest, const char* msg);
 	
 	// Print functions do not work inside movement hooks, for some reasons...
-	void PrintConsole(CBaseEntity *entity, const char *format, ...);
-	void PrintChat(CBaseEntity *entity, const char *format, ...);
-	void PrintCentre(CBaseEntity *entity, const char *format, ...);
-	void PrintAlert(CBaseEntity *entity, const char *format, ...);
+	void PrintConsole(CBasePlayerController* player, const char *format, ...);
+	void PrintChat(CBasePlayerController* player, const char *format, ...);
+	void PrintCentre(CBasePlayerController* player, const char *format, ...);
+	void PrintAlert(CBasePlayerController* player, const char *format, ...);
 	void PrintHTMLCentre(CBaseEntity *entity, const char *format, ...); // This one uses HTML formatting.
 
 	void PrintConsoleAll(const char *format, ...);

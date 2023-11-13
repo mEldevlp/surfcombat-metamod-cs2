@@ -26,7 +26,6 @@ public:
 
 	void FireGameEvent(IGameEvent* pEvent)
 	{
-		utils::ClientPrintAll(MsgDest::HUD_PRINTTALK, " \5[EVENT] id- \7%d", pEvent->GetID());
 		m_Callback(pEvent);
 	}
 

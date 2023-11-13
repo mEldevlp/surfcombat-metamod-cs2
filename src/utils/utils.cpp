@@ -61,7 +61,7 @@ bool utils::Initialize(ISmmAPI *ismm, char *error, size_t maxlen)
 	utils::UnlockConVars();
 	utils::UnlockConCommands();
 	
-	RESOLVE_SIG(modules::server, sigs::UTIL_ClientPrintFilter, UTIL_ClientPrintFilter);
+	//RESOLVE_SIG(modules::server, sigs::UTIL_ClientPrintFilter, UTIL_ClientPrintFilter);
 
 	RESOLVE_SIG(modules::server, sigs::UTIL_ClientPrintAll, addresses::UTIL_ClientPrintAll);
 	RESOLVE_SIG(modules::server, sigs::ClientPrint, addresses::ClientPrint);
@@ -242,49 +242,42 @@ CPlayerSlot utils::GetEntityPlayerSlot(CBaseEntity *entity)
 	vsnprintf(buffer, sizeof(buffer), format, args); \
 	va_end(args);
 
-void utils::ClientPrintAll(int hud_dest, const char* format, ...)
+void utils::ClientPrintAll(int hud_dest, const char* msg)
 {
-	FORMAT_STRING(buffer);
-	addresses::UTIL_ClientPrintAll(hud_dest, buffer, nullptr, nullptr, nullptr, nullptr);
-	ConMsg("%s\n", buffer);
+	addresses::UTIL_ClientPrintAll(hud_dest, msg, nullptr, nullptr, nullptr, nullptr);
+	ConMsg("%s\n", msg);
 }
 
-void utils::ClientPrint(CBasePlayerController* player, int hud_dest, const char* format, ...)
+void utils::ClientPrint(CBasePlayerController* player, int hud_dest, const char* msg)
 {
-	FORMAT_STRING(buffer);
-
 	if (player)
-		addresses::ClientPrint(player, hud_dest, buffer, nullptr, nullptr, nullptr, nullptr);
+		addresses::ClientPrint(player, hud_dest, msg, nullptr, nullptr, nullptr, nullptr);
 	else
-		ConMsg("%s\n", buffer);
+		ConMsg("%s\n", msg);
 }
 
-void utils::PrintConsole(CBaseEntity *entity, const char *format, ...)
+void utils::PrintConsole(CBasePlayerController* player, const char *format, ...)
 {
 	FORMAT_STRING(buffer);
-	CSingleRecipientFilter filter(utils::GetEntityPlayerSlot(entity).Get());
-	UTIL_ClientPrintFilter(filter, HUD_PRINTCONSOLE, buffer, "", "", "", "");
+	utils::ClientPrint(player, MsgDest::HUD_PRINTCONSOLE, buffer);
 }
 
-void utils::PrintChat(CBaseEntity *entity, const char *format, ...)
+void utils::PrintChat(CBasePlayerController* player, const char *format, ...)
 {
 	FORMAT_STRING(buffer);
-	CSingleRecipientFilter filter(utils::GetEntityPlayerSlot(entity).Get());
-	UTIL_ClientPrintFilter(filter, HUD_PRINTTALK, buffer, "", "", "", "");
+	utils::ClientPrint(player, MsgDest::HUD_PRINTTALK, buffer);
 }
 
-void utils::PrintCentre(CBaseEntity *entity, const char *format, ...)
+void utils::PrintCentre(CBasePlayerController* player, const char *format, ...)
 {
 	FORMAT_STRING(buffer);
-	CSingleRecipientFilter filter(utils::GetEntityPlayerSlot(entity).Get());
-	UTIL_ClientPrintFilter(filter, HUD_PRINTCENTER, buffer, "", "", "", "");
+	utils::ClientPrint(player, MsgDest::HUD_PRINTCENTER, buffer);
 }
 
-void utils::PrintAlert(CBaseEntity *entity, const char *format, ...)
+void utils::PrintAlert(CBasePlayerController* player, const char *format, ...)
 {
 	FORMAT_STRING(buffer);
-	CSingleRecipientFilter filter(utils::GetEntityPlayerSlot(entity).Get());
-	UTIL_ClientPrintFilter(filter, HUD_PRINTALERT, buffer, "", "", "", "");
+	utils::ClientPrint(player, MsgDest::HUD_PRINTALERT, buffer);
 }
 
 void utils::PrintHTMLCentre(CBaseEntity *entity, const char *format, ...)
@@ -309,29 +302,25 @@ void utils::PrintHTMLCentre(CBaseEntity *entity, const char *format, ...)
 void utils::PrintConsoleAll(const char *format, ...)
 {
 	FORMAT_STRING(buffer);
-	CBroadcastRecipientFilter filter;
-	UTIL_ClientPrintFilter(filter, HUD_PRINTCONSOLE, buffer, "", "", "", "");
+	utils::ClientPrintAll(MsgDest::HUD_PRINTCONSOLE, buffer);
 }
 
 void utils::PrintChatAll(const char *format, ...)
 {
 	FORMAT_STRING(buffer);
-	CBroadcastRecipientFilter filter;
-	UTIL_ClientPrintFilter(filter, HUD_PRINTTALK, buffer, "", "", "", "");
+	utils::ClientPrintAll(MsgDest::HUD_PRINTTALK, buffer);
 }
 
 void utils::PrintCentreAll(const char *format, ...)
 {
 	FORMAT_STRING(buffer);
-	CBroadcastRecipientFilter filter;
-	UTIL_ClientPrintFilter(filter, HUD_PRINTCENTER, buffer, "", "", "", "");
+	utils::ClientPrintAll(MsgDest::HUD_PRINTCENTER, buffer);
 }
 
 void utils::PrintAlertAll(const char *format, ...)
 {
 	FORMAT_STRING(buffer);
-	CBroadcastRecipientFilter filter;
-	UTIL_ClientPrintFilter(filter, HUD_PRINTALERT, buffer, "", "", "", "");
+	utils::ClientPrintAll(MsgDest::HUD_PRINTALERT, buffer);
 }
 
 void utils::PrintHTMLCentreAll(const char *format, ...)
