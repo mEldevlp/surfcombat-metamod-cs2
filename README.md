@@ -26,11 +26,11 @@ ambuild
 #### Features
 
 - [x] Red and Blue player models
-- [ ] Spawn protection 5-10 seconds
+- [x] Spawn protection 10 seconds
 - [ ] Commands
-    - [ ] !hide - teammates hide
+    - [x] !hide - teammates hide
     - [ ] !legs - hide player legs
-    - [ ] !rs - reset score
+    - [x] !rs - reset score
 - [ ] Admin
     - [ ] Each kill gives you 10-5 HP with green(or any) screen fade (and mb force reload gun without anim)
     - [ ] !kick <steam_id> or <user_name> \<reason>

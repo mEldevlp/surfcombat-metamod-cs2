@@ -58,6 +58,9 @@
     <ClCompile Include="src\surf\sc_event_manager.cpp">
       <Filter>SURF</Filter>
     </ClCompile>
+    <ClCompile Include="src\surf\sc_features.cpp">
+      <Filter>SURF</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SURF">
@@ -84,6 +87,9 @@
       <Filter>UTILS</Filter>
     </ClInclude>
     <ClInclude Include="src\surf\sc_event_manager.h">
+      <Filter>SURF</Filter>
+    </ClInclude>
+    <ClInclude Include="src\surf\sc_features.h">
       <Filter>SURF</Filter>
     </ClInclude>
   </ItemGroup>

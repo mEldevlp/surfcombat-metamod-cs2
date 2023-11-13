@@ -63,3 +63,9 @@ jobs:
           mkdir build && cd build
           python ../configure.py --enable-optimize --symbol-files --sdks cs2
           ambuild
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }}
+          path: surfcombat-metamod-cs2/build/package
